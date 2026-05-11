@@ -28,7 +28,7 @@ import type {
 } from '@prisma-next/contract/types';
 
 export type StorageHash =
-  StorageHashBase<'sha256:0a0a081bf67f866d5adea963fe0b83557074255f44478473fc27f120e5093d06'>;
+  StorageHashBase<'sha256:0ca51edc8488a792f5bc0df1e30a79b84dffca45be29457839b4d3f9f391fff6'>;
 export type ExecutionHash = ExecutionHashBase<string>;
 export type ProfileHash =
   ProfileHashBase<'sha256:4afac8f9fa43b8aa78ee7fb8b1b3e079e92b64ef745e9f115be11e201eb08ef1'>;
@@ -94,7 +94,7 @@ type ContractBase = ContractType<
         uniques: readonly [];
         indexes: readonly [
           {
-            readonly columns: readonly ['id', 'description', 'category', 'rating'];
+            readonly columns: readonly ['category', 'description', 'id', 'rating'];
             readonly name: 'item_bm25_idx';
             readonly type: 'bm25';
             readonly options: { readonly key_field: 'id' };
