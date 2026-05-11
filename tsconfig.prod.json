@@ -1,0 +1,11 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "composite": false,
+    "incremental": false,
+    "outDir": "${configDir}/dist-tsc-prod",
+    "rootDir": "${configDir}"
+  },
+  "exclude": ["test", "dist", "dist-tsc", "dist-tsc-prod", "coverage"]
+}

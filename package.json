@@ -1,0 +1,13 @@
+{
+  "name": "prisma-paradedb",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "build": "pnpm --filter @prisma-next/extension-paradedb... --if-present build",
+    "test": "pnpm --filter @prisma-next/extension-paradedb test",
+    "typecheck": "pnpm --filter @prisma-next/extension-paradedb typecheck"
+  }
+}
