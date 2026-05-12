@@ -1,0 +1,56 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.head_ref || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Run tests
+        run: pnpm test
+
+      - name: Run demo
+        run: |
+          pnpm build
+          cd paradedb-demo
+          pnpm install
+          cp .env.example .env
+          pnpm docker:up
+          pnpm emit
+          pnpm db:init
+          pnpm seed
+          pnpm start -- match 'headphones'
+          pnpm start -- top 'laptop' 5
+          pnpm start -- fuzzy 'laptp' 2
+          pnpm start -- proximity 'wireless' 'keyboard' 3
+          pnpm start -- proximity-chain 'cooling' '>1' 'fan' '>1' 'and'
+          pnpm start -- chain-demo
+          pnpm start -- mode-tour
+          pnpm start -- cast-demo
