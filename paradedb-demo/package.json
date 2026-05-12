@@ -32,18 +32,18 @@
     "@prisma-next/sql-runtime": "0.5.0-dev.85",
     "@prisma-next/target-postgres": "0.5.0-dev.85",
     "arktype": "^2.1.29",
-    "dotenv": "^16.4.5",
+    "dotenv": "^17.4.2",
     "pg": "8.20.0"
   },
   "devDependencies": {
     "@prisma-next/cli": "0.5.0-dev.85",
     "@prisma-next/emitter": "0.5.0-dev.85",
     "@prisma-next/sql-contract-emitter": "0.5.0-dev.85",
-    "@types/node": "24.10.4",
+    "@types/node": "25.7.0",
     "@types/pg": "8.20.0",
     "typanion": "3.14.0",
     "tsx": "^4.19.2",
-    "typescript": "5.9.3",
+    "typescript": "6.0.3",
     "vitest": "4.1.5"
   }
 }
