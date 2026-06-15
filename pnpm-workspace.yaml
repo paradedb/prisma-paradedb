@@ -3,4 +3,7 @@ packages:
   - paradedb-demo
 
 allowBuilds:
-  esbuild@0.25.11 || 0.27.2: true
+  esbuild@0.28.1: true
+
+overrides:
+  esbuild@>=0.17.0 <0.28.1: '>=0.28.1'
