@@ -7,3 +7,4 @@ allowBuilds:
 
 overrides:
   esbuild@>=0.17.0 <0.28.1: '>=0.28.1'
+  vite@>=8.0.0 <8.0.16: '>=8.0.16'
