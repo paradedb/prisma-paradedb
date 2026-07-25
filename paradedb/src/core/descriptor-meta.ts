@@ -1,16 +1,22 @@
+import type { CodecControlHooks } from '@prisma-next/family-sql/control';
+import type { AnyCodecDescriptor } from '@prisma-next/framework-components/codec';
 import { LiteralExpr } from '@prisma-next/sql-relational-core/ast';
-import { buildOperation, toExpr } from '@prisma-next/sql-relational-core/expression';
+import { buildOperation, codecOf, toExpr } from '@prisma-next/sql-relational-core/expression';
+import type { CodecTypes as ParadeDbCodecTypes } from '../types/codec-types';
 import { paradedbIndexTypes } from '../types/index-types';
 import type { QueryOperationTypes } from '../types/operation-types';
-import { PARADEDB_EXTENSION_ID } from './constants';
+import { PARADEDB_EXTENSION_ID, PARADEDB_VECTOR_CODEC_ID } from './constants';
 import { ParadeDbProximityChain } from './proximity-chain';
+import { expandVectorNativeType, paradedbVectorDescriptor } from './vector-codec';
 
 type CodecTypesBase = Record<string, { readonly input: unknown; readonly output: unknown }>;
 
 const TEXT = 'pg/text@1' as const;
 const BOOL = 'pg/bool@1' as const;
 const FLOAT4 = 'pg/float4@1' as const;
+const FLOAT8 = 'pg/float8@1' as const;
 const INT4 = 'pg/int4@1' as const;
+const VECTOR = PARADEDB_VECTOR_CODEC_ID;
 
 export function paradedbQueryOperations<CT extends CodecTypesBase>(): QueryOperationTypes<CT> {
   return {
@@ -21,7 +27,7 @@ export function paradedbQueryOperations<CT extends CodecTypesBase>(): QueryOpera
       impl: (self, query) =>
         buildOperation({
           method: 'paradeDbMatch',
-          args: [toExpr(self, TEXT), toExpr(query, TEXT)],
+          args: [toExpr(self, { codecId: TEXT }), toExpr(query, { codecId: TEXT })],
           returns: { codecId: BOOL, nullable: false },
           lowering: {
             targetFamily: 'sql',
@@ -35,7 +41,7 @@ export function paradedbQueryOperations<CT extends CodecTypesBase>(): QueryOpera
       impl: (self, query) =>
         buildOperation({
           method: 'paradeDbMatchAny',
-          args: [toExpr(self, TEXT), toExpr(query, TEXT)],
+          args: [toExpr(self, { codecId: TEXT }), toExpr(query, { codecId: TEXT })],
           returns: { codecId: BOOL, nullable: false },
           lowering: {
             targetFamily: 'sql',
@@ -49,7 +55,7 @@ export function paradedbQueryOperations<CT extends CodecTypesBase>(): QueryOpera
       impl: (self, query) =>
         buildOperation({
           method: 'paradeDbMatchAll',
-          args: [toExpr(self, TEXT), toExpr(query, TEXT)],
+          args: [toExpr(self, { codecId: TEXT }), toExpr(query, { codecId: TEXT })],
           returns: { codecId: BOOL, nullable: false },
           lowering: {
             targetFamily: 'sql',
@@ -64,7 +70,7 @@ export function paradedbQueryOperations<CT extends CodecTypesBase>(): QueryOpera
       impl: (self, query) =>
         buildOperation({
           method: 'paradeDbTerm',
-          args: [toExpr(self, TEXT), toExpr(query, TEXT)],
+          args: [toExpr(self, { codecId: TEXT }), toExpr(query, { codecId: TEXT })],
           returns: { codecId: BOOL, nullable: false },
           lowering: {
             targetFamily: 'sql',
@@ -79,7 +85,7 @@ export function paradedbQueryOperations<CT extends CodecTypesBase>(): QueryOpera
       impl: (self, query) =>
         buildOperation({
           method: 'paradeDbPhrase',
-          args: [toExpr(self, TEXT), toExpr(query, TEXT)],
+          args: [toExpr(self, { codecId: TEXT }), toExpr(query, { codecId: TEXT })],
           returns: { codecId: BOOL, nullable: false },
           lowering: {
             targetFamily: 'sql',
@@ -94,7 +100,7 @@ export function paradedbQueryOperations<CT extends CodecTypesBase>(): QueryOpera
       impl: (self) =>
         buildOperation({
           method: 'paradeDbScore',
-          args: [toExpr(self, INT4)],
+          args: [toExpr(self, { codecId: INT4 })],
           returns: { codecId: FLOAT4, nullable: false },
           lowering: {
             targetFamily: 'sql',
@@ -115,7 +121,7 @@ export function paradedbQueryOperations<CT extends CodecTypesBase>(): QueryOpera
         }
         return buildOperation({
           method: 'paradeDbFuzzy',
-          args: [toExpr(self, TEXT), LiteralExpr.of(distance)],
+          args: [toExpr(self, { codecId: TEXT }), LiteralExpr.of(distance)],
           returns: { codecId: TEXT, nullable: false },
           lowering: {
             targetFamily: 'sql',
@@ -136,7 +142,7 @@ export function paradedbQueryOperations<CT extends CodecTypesBase>(): QueryOpera
         }
         return buildOperation({
           method: 'paradeDbBoost',
-          args: [toExpr(self, TEXT), LiteralExpr.of(weight)],
+          args: [toExpr(self, { codecId: TEXT }), LiteralExpr.of(weight)],
           returns: { codecId: TEXT, nullable: false },
           lowering: {
             targetFamily: 'sql',
@@ -154,7 +160,7 @@ export function paradedbQueryOperations<CT extends CodecTypesBase>(): QueryOpera
         }
         return buildOperation({
           method: 'paradeDbConst',
-          args: [toExpr(self, TEXT), LiteralExpr.of(value)],
+          args: [toExpr(self, { codecId: TEXT }), LiteralExpr.of(value)],
           returns: { codecId: TEXT, nullable: false },
           lowering: {
             targetFamily: 'sql',
@@ -172,7 +178,7 @@ export function paradedbQueryOperations<CT extends CodecTypesBase>(): QueryOpera
         }
         return buildOperation({
           method: 'paradeDbSlop',
-          args: [toExpr(self, TEXT), LiteralExpr.of(slop)],
+          args: [toExpr(self, { codecId: TEXT }), LiteralExpr.of(slop)],
           returns: { codecId: TEXT, nullable: false },
           lowering: {
             targetFamily: 'sql',
@@ -187,10 +193,69 @@ export function paradedbQueryOperations<CT extends CodecTypesBase>(): QueryOpera
       self: { codecId: TEXT },
       impl: (start) => new ParadeDbProximityChain(start),
     },
+    // `key_field @@@ pdb.all()` — mandatory to activate the bm25 scan when the
+    // query is a pure vector Top-K (ORDER BY distance + LIMIT).
+    paradeDbAll: {
+      self: { codecId: INT4 },
+      impl: (self) =>
+        buildOperation({
+          method: 'paradeDbAll',
+          args: [toExpr(self, { codecId: INT4 })],
+          returns: { codecId: BOOL, nullable: false },
+          lowering: {
+            targetFamily: 'sql',
+            strategy: 'function',
+            template: '{{self}} @@@ pdb.all()',
+          },
+        }),
+    },
+    // pgvector distance operators, reused verbatim by ParadeDB. The operator
+    // must match the metric of the index opclass for Top-K pushdown:
+    // `<->` ↔ vector_l2_ops, `<=>` ↔ vector_cosine_ops, `<#>` ↔ vector_ip_ops.
+    paradeDbL2Distance: {
+      self: { codecId: VECTOR },
+      impl: (self, query) => vectorDistanceExpr('paradeDbL2Distance', '<->', self, query),
+    },
+    paradeDbCosineDistance: {
+      self: { codecId: VECTOR },
+      impl: (self, query) => vectorDistanceExpr('paradeDbCosineDistance', '<=>', self, query),
+    },
+    paradeDbInnerProduct: {
+      self: { codecId: VECTOR },
+      impl: (self, query) => vectorDistanceExpr('paradeDbInnerProduct', '<#>', self, query),
+    },
   };
 }
 
-export const paradedbPackMeta = {
+// The query vector inherits the column's codec ref (via `codecOf`) so encoding
+// resolves the per-instance codec — `vector(3)` vs `vector(1536)`.
+function vectorDistanceExpr(method: string, operator: string, self: unknown, query: unknown) {
+  const codec = codecOf(self) ?? { codecId: VECTOR };
+  return buildOperation({
+    method,
+    args: [toExpr(self, codec), toExpr(query, codec)],
+    returns: { codecId: FLOAT8, nullable: false },
+    lowering: {
+      targetFamily: 'sql',
+      strategy: 'function',
+      template: `{{self}} ${operator} {{arg0}}`,
+    },
+  });
+}
+
+// Widened to the public framework interfaces so the concrete codec class types
+// never leak into the pack type (TS2742 portability at consumer contract sites).
+const paradedbCodecContributions: {
+  readonly codecDescriptors: ReadonlyArray<AnyCodecDescriptor>;
+  readonly controlPlaneHooks: Readonly<Record<string, CodecControlHooks>>;
+} = {
+  codecDescriptors: [paradedbVectorDescriptor],
+  controlPlaneHooks: {
+    [PARADEDB_VECTOR_CODEC_ID]: { expandNativeType: expandVectorNativeType },
+  },
+};
+
+const paradedbPackMetaBase = {
   kind: 'extension',
   id: PARADEDB_EXTENSION_ID,
   familyId: 'sql',
@@ -199,10 +264,27 @@ export const paradedbPackMeta = {
   capabilities: {
     postgres: {
       'paradedb/bm25': true,
+      'paradedb/vector': true,
     },
   },
   indexTypes: paradedbIndexTypes,
   types: {
+    codecTypes: {
+      import: {
+        package: '@prisma-next/extension-paradedb/codec-types',
+        named: 'CodecTypes',
+        alias: 'ParadeDbCodecTypes',
+      },
+      ...paradedbCodecContributions,
+    },
+    storage: [
+      {
+        typeId: PARADEDB_VECTOR_CODEC_ID,
+        familyId: 'sql',
+        targetId: 'postgres',
+        nativeType: 'vector',
+      },
+    ],
     queryOperationTypes: {
       import: {
         package: '@prisma-next/extension-paradedb/operation-types',
@@ -212,3 +294,7 @@ export const paradedbPackMeta = {
     },
   },
 } as const;
+
+export const paradedbPackMeta: typeof paradedbPackMetaBase & {
+  readonly __codecTypes?: ParadeDbCodecTypes;
+} = paradedbPackMetaBase;

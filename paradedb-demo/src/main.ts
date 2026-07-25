@@ -10,6 +10,7 @@ import { bm25ModeTour } from './queries/bm25-mode-tour';
 import { bm25Proximity } from './queries/bm25-proximity';
 import { bm25ProximityChain, type ProximityChainStep } from './queries/bm25-proximity-chain';
 import { bm25TopByScore } from './queries/bm25-top-by-score';
+import { vectorSearch } from './queries/vector-search';
 
 function parseProximityChainArgs(args: readonly string[]): {
   readonly start: string;
@@ -103,6 +104,20 @@ async function main() {
     } else if (cmd === 'cast-demo') {
       const rows = await bm25CastDemo();
       console.log(JSON.stringify(rows, null, 2));
+    } else if (cmd === 'vector') {
+      const [vectorStr, limitStr] = args;
+      if (!vectorStr) {
+        console.error("Usage: pnpm start -- vector <x,y,z> [limit] (e.g. vector '0.2,0.8,0.1' 5)");
+        process.exit(1);
+      }
+      const queryVector = vectorStr.split(',').map((part) => Number.parseFloat(part));
+      if (queryVector.length !== 3 || queryVector.some((n) => !Number.isFinite(n))) {
+        console.error(`vector: expected three comma-separated numbers; got '${vectorStr}'`);
+        process.exit(1);
+      }
+      const limit = limitStr ? Number.parseInt(limitStr, 10) : 5;
+      const rows = await vectorSearch(queryVector, limit);
+      console.log(JSON.stringify(rows, null, 2));
     } else if (cmd === 'orm-top') {
       const [query, limitStr] = args;
       if (!query) {
@@ -114,7 +129,7 @@ async function main() {
       console.log(JSON.stringify(rows, null, 2));
     } else {
       console.log(
-        'Usage: pnpm start -- [match <query> [limit] | top <query> [limit] | fuzzy <term> <distance> [limit] | proximity <term1> <term2> <distance> [limit] | proximity-chain <t0> <d1> <t1> [<d2> <t2> ...] | chain-demo | mode-tour | cast-demo | orm-top <query> [limit]]',
+        'Usage: pnpm start -- [match <query> [limit] | top <query> [limit] | fuzzy <term> <distance> [limit] | proximity <term1> <term2> <distance> [limit] | proximity-chain <t0> <d1> <t1> [<d2> <t2> ...] | chain-demo | mode-tour | cast-demo | vector <x,y,z> [limit] | orm-top <query> [limit]]',
       );
       process.exit(1);
     }

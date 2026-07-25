@@ -7,51 +7,77 @@ const items: ReadonlyArray<{
   readonly description: string;
   readonly category: string;
   readonly rating: number;
+  readonly embedding: readonly number[];
 }> = [
   {
     id: 1,
     description: 'Ergonomic mesh office chair with lumbar support',
     category: 'furniture',
     rating: 5,
+    embedding: [0.9, 0.1, 0.1],
   },
   {
     id: 2,
     description: 'Wireless mechanical keyboard with RGB lighting',
     category: 'electronics',
     rating: 4,
+    embedding: [0.1, 0.9, 0.1],
   },
   {
     id: 3,
     description: 'Stainless steel electric kettle 1.7 liters',
     category: 'kitchen',
     rating: 5,
+    embedding: [0.1, 0.1, 0.9],
   },
   {
     id: 4,
     description: 'Noise cancelling over-ear headphones',
     category: 'electronics',
     rating: 5,
+    embedding: [0.2, 0.8, 0.1],
   },
   {
     id: 5,
     description: 'Ultralight backpacking tent for two people',
     category: 'outdoors',
     rating: 4,
+    embedding: [0.5, 0.1, 0.5],
   },
   {
     id: 6,
     description: 'Laptop stand with cooling fan and USB hub',
     category: 'electronics',
     rating: 3,
+    embedding: [0.15, 0.85, 0.2],
   },
-  { id: 7, description: 'Cast iron skillet 12 inch pre-seasoned', category: 'kitchen', rating: 5 },
-  { id: 8, description: 'Running shoes with carbon plate midsole', category: 'sports', rating: 4 },
-  { id: 9, description: 'Standing desk converter for laptops', category: 'furniture', rating: 4 },
+  {
+    id: 7,
+    description: 'Cast iron skillet 12 inch pre-seasoned',
+    category: 'kitchen',
+    rating: 5,
+    embedding: [0.2, 0.1, 0.85],
+  },
+  {
+    id: 8,
+    description: 'Running shoes with carbon plate midsole',
+    category: 'sports',
+    rating: 4,
+    embedding: [0.6, 0.5, 0.1],
+  },
+  {
+    id: 9,
+    description: 'Standing desk converter for laptops',
+    category: 'furniture',
+    rating: 4,
+    embedding: [0.85, 0.2, 0.15],
+  },
   {
     id: 10,
     description: 'Insulated water bottle keeps cold 24 hours',
     category: 'outdoors',
     rating: 5,
+    embedding: [0.45, 0.15, 0.55],
   },
 ];
 
@@ -61,7 +87,7 @@ async function main() {
 
   try {
     for (const item of items) {
-      await runtime.execute(db.sql.item.insert(item).build());
+      await runtime.execute(db.sql.public.item.insert([item]).build());
     }
     console.log(`Seeded ${items.length} items`);
   } finally {

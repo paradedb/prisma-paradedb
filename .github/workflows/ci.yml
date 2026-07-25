@@ -57,3 +57,5 @@ jobs:
           pnpm start -- chain-demo
           pnpm start -- mode-tour
           pnpm start -- cast-demo
+          pnpm start -- vector '0.1,0.9,0.1' 3
+          pnpm test

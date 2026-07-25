@@ -35,7 +35,7 @@ describe('paradedb operations', () => {
 
   it('descriptor provides query operations whose impls build AST with lowering', () => {
     const operations = paradedbDescriptor.queryOperations?.() ?? {};
-    expect(Object.keys(operations)).toHaveLength(11);
+    expect(Object.keys(operations)).toHaveLength(15);
 
     const matchOps: ReadonlyArray<readonly [string, string]> = [
       ['paradeDbMatch', '@@@'],
@@ -47,7 +47,7 @@ describe('paradedb operations', () => {
     for (const [method, op] of matchOps) {
       const ast = buildOpAst(
         operations[method],
-        ParamRef.of('hello', { codecId: 'pg/text@1' }),
+        ParamRef.of('hello', { codec: { codecId: 'pg/text@1' } }),
         'world',
       );
       expect(ast).toBeInstanceOf(OperationExpr);
@@ -60,7 +60,7 @@ describe('paradedb operations', () => {
 
     const scoreAst = buildOpAst(
       operations['paradeDbScore'],
-      ParamRef.of(1, { codecId: 'pg/int4@1' }),
+      ParamRef.of(1, { codec: { codecId: 'pg/int4@1' } }),
     );
     expect(scoreAst.lowering).toEqual({
       targetFamily: 'sql',
@@ -75,7 +75,7 @@ describe('paradedb operations', () => {
       ['paradeDbSlop', 'slop', 2],
     ];
     for (const [method, pdbType, n] of typmodOps) {
-      const ast = buildOpAst(operations[method], ParamRef.of('q', { codecId: 'pg/text@1' }), n);
+      const ast = buildOpAst(operations[method], ParamRef.of('q', { codec: { codecId: 'pg/text@1' } }), n);
       expect(ast.lowering).toEqual({
         targetFamily: 'sql',
         strategy: 'function',
@@ -87,7 +87,7 @@ describe('paradedb operations', () => {
 
     // paradeDbProximity returns a builder; one .within(...) step produces the
     // single-edge `(start ## N ## term)` AST.
-    const proximityAst = getProximityChain(ParamRef.of('sleek', { codecId: 'pg/text@1' }))
+    const proximityAst = getProximityChain(ParamRef.of('sleek', { codec: { codecId: 'pg/text@1' } }))
       .within(1, 'shoes')
       .buildAst() as OperationExpr;
     expect(proximityAst).toBeInstanceOf(OperationExpr);
@@ -100,7 +100,7 @@ describe('paradedb operations', () => {
   });
 
   it('paradeDbProximity chains multiple .within(...) steps with mixed direction', () => {
-    const ast = getProximityChain(ParamRef.of('sleek', { codecId: 'pg/text@1' }))
+    const ast = getProximityChain(ParamRef.of('sleek', { codec: { codecId: 'pg/text@1' } }))
       .within(1, 'running')
       .within(2, 'shoes', { ordered: true })
       .buildAst() as OperationExpr;
@@ -116,7 +116,7 @@ describe('paradedb operations', () => {
   });
 
   it('paradeDbProximity throws on empty chain or invalid distance', () => {
-    const chain = getProximityChain(ParamRef.of('sleek', { codecId: 'pg/text@1' }));
+    const chain = getProximityChain(ParamRef.of('sleek', { codec: { codecId: 'pg/text@1' } }));
 
     expect(() => chain.buildAst()).toThrow('chain must have at least one .within');
     expect(() => chain.within(-1, 'x')).toThrow('non-negative integer');
@@ -130,7 +130,7 @@ describe('paradedb operations', () => {
       if (!op) throw new Error(`${method} not found`);
       return op;
     };
-    const term = ParamRef.of('term', { codecId: 'pg/text@1' });
+    const term = ParamRef.of('term', { codec: { codecId: 'pg/text@1' } });
 
     expect(() => find('paradeDbFuzzy').impl(term as never, 3 as never)).toThrow(
       'distance must be an integer in [0, 2]',
@@ -205,8 +205,8 @@ describe('paradedb operations', () => {
     }
   });
 
-  it('descriptor exposes empty codec registry', () => {
-    expect(paradedbDescriptor.codecs()).toEqual([]);
+  it('descriptor exposes the vector codec in its registry', () => {
+    expect(paradedbDescriptor.codecs().map((d) => d.codecId)).toEqual(['paradedb/vector@1']);
   });
 
   it('instance is minimal (identity only)', () => {
