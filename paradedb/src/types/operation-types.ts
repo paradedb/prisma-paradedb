@@ -80,5 +80,34 @@ export type QueryOperationTypes<CT extends CodecTypesBase> = SqlQueryOperationTy
       readonly self: { readonly codecId: 'pg/text@1' };
       readonly impl: (start: CodecExpression<'pg/text@1', boolean, CT>) => ParadeDbProximityChain;
     };
+    // `key_field @@@ pdb.all()` — the match-all predicate that activates the bm25
+    // scan; mandatory alongside vector distance ORDER BY.
+    readonly paradeDbAll: {
+      readonly self: { readonly codecId: 'pg/int4@1' };
+      readonly impl: (
+        self: CodecExpression<'pg/int4@1', boolean, CT>,
+      ) => Expression<{ codecId: 'pg/bool@1'; nullable: false }>;
+    };
+    readonly paradeDbL2Distance: {
+      readonly self: { readonly codecId: 'paradedb/vector@1' };
+      readonly impl: (
+        self: CodecExpression<'paradedb/vector@1', boolean, CT>,
+        query: CodecExpression<'paradedb/vector@1', boolean, CT>,
+      ) => Expression<{ codecId: 'pg/float8@1'; nullable: false }>;
+    };
+    readonly paradeDbCosineDistance: {
+      readonly self: { readonly codecId: 'paradedb/vector@1' };
+      readonly impl: (
+        self: CodecExpression<'paradedb/vector@1', boolean, CT>,
+        query: CodecExpression<'paradedb/vector@1', boolean, CT>,
+      ) => Expression<{ codecId: 'pg/float8@1'; nullable: false }>;
+    };
+    readonly paradeDbInnerProduct: {
+      readonly self: { readonly codecId: 'paradedb/vector@1' };
+      readonly impl: (
+        self: CodecExpression<'paradedb/vector@1', boolean, CT>,
+        query: CodecExpression<'paradedb/vector@1', boolean, CT>,
+      ) => Expression<{ codecId: 'pg/float8@1'; nullable: false }>;
+    };
   }
 >;

@@ -55,12 +55,12 @@ export class ParadeDbProximityChain
         'paradeDbProximity: chain must have at least one .within(distance, term) step',
       );
     }
-    const args: AnyExpression[] = [toExpr(this.start, TEXT)];
+    const args: AnyExpression[] = [toExpr(this.start, { codecId: TEXT })];
     let template = '({{self}}';
     this.steps.forEach((step, i) => {
       const op = step.ordered ? '##>' : '##';
       args.push(LiteralExpr.of(step.distance));
-      args.push(toExpr(step.term, TEXT));
+      args.push(toExpr(step.term, { codecId: TEXT }));
       template += ` ${op} {{arg${2 * i}}} ${op} {{arg${2 * i + 1}}}`;
     });
     template += ')';

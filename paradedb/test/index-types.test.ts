@@ -12,9 +12,9 @@ describe('ParadeDB extension', () => {
       expect(paradedbPackMeta.targetId).toBe('postgres');
     });
 
-    it('declares bm25 capability', () => {
+    it('declares bm25 and vector capabilities', () => {
       expect(paradedbPackMeta.capabilities).toEqual({
-        postgres: { 'paradedb/bm25': true },
+        postgres: { 'paradedb/bm25': true, 'paradedb/vector': true },
       });
     });
 

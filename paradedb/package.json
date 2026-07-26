@@ -23,7 +23,8 @@
     "@prisma-next/sql-operations": "0.15.0",
     "@prisma-next/sql-relational-core": "0.15.0",
     "@prisma-next/sql-runtime": "0.15.0",
-    "arktype": "^2.1.25"
+    "@standard-schema/spec": "^1.1.0",
+    "arktype": "^2.2.3"
   },
   "devDependencies": {
     "@prisma-next/adapter-postgres": "0.15.0",
@@ -31,7 +32,8 @@
     "@prisma-next/sql-contract-ts": "0.15.0",
     "tsdown": "0.22.0",
     "typanion": "3.14.0",
-    "typescript": "7.0.2",
+    "typescript": "5.9.3",
+    "unrun": "^0.3.1",
     "vitest": "4.1.5"
   },
   "files": [
@@ -39,7 +41,10 @@
     "src"
   ],
   "exports": {
+    "./codec-types": "./dist/codec-types.mjs",
+    "./column-types": "./dist/column-types.mjs",
     "./control": "./dist/control.mjs",
+    "./ddl": "./dist/ddl.mjs",
     "./index-types": "./dist/index-types.mjs",
     "./operation-types": "./dist/operation-types.mjs",
     "./pack": "./dist/pack.mjs",

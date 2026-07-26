@@ -2,133 +2,177 @@
   "schemaVersion": "1",
   "targetFamily": "sql",
   "target": "postgres",
-  "profileHash": "sha256:4afac8f9fa43b8aa78ee7fb8b1b3e079e92b64ef745e9f115be11e201eb08ef1",
+  "profileHash": "sha256:9c8aa3114e84ed3b7ea2bd57526d9c2e1bf7c5292be694e9d3801f566fda7ccb",
   "roots": {
-    "item": "Item"
+    "item": {
+      "model": "Item",
+      "namespace": "public"
+    }
   },
-  "models": {
-    "Item": {
-      "fields": {
-        "category": {
-          "nullable": false,
-          "type": {
-            "codecId": "pg/text@1",
-            "kind": "scalar"
-          }
-        },
-        "description": {
-          "nullable": false,
-          "type": {
-            "codecId": "pg/text@1",
-            "kind": "scalar"
-          }
-        },
-        "id": {
-          "nullable": false,
-          "type": {
-            "codecId": "pg/int4@1",
-            "kind": "scalar"
-          }
-        },
-        "rating": {
-          "nullable": false,
-          "type": {
-            "codecId": "pg/int4@1",
-            "kind": "scalar"
+  "domain": {
+    "namespaces": {
+      "public": {
+        "models": {
+          "Item": {
+            "fields": {
+              "category": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "description": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "embedding": {
+                "nullable": false,
+                "type": {
+                  "codecId": "paradedb/vector@1",
+                  "kind": "scalar",
+                  "typeParams": {
+                    "dimensions": 3
+                  }
+                }
+              },
+              "id": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/int4@1",
+                  "kind": "scalar"
+                }
+              },
+              "rating": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/int4@1",
+                  "kind": "scalar"
+                }
+              }
+            },
+            "relations": {},
+            "storage": {
+              "fields": {
+                "category": {
+                  "column": "category"
+                },
+                "description": {
+                  "column": "description"
+                },
+                "embedding": {
+                  "column": "embedding"
+                },
+                "id": {
+                  "column": "id"
+                },
+                "rating": {
+                  "column": "rating"
+                }
+              },
+              "namespaceId": "public",
+              "table": "item"
+            }
           }
         }
-      },
-      "relations": {},
-      "storage": {
-        "fields": {
-          "category": {
-            "column": "category"
-          },
-          "description": {
-            "column": "description"
-          },
-          "id": {
-            "column": "id"
-          },
-          "rating": {
-            "column": "rating"
-          }
-        },
-        "table": "item"
       }
     }
   },
   "storage": {
-    "storageHash": "sha256:0ca51edc8488a792f5bc0df1e30a79b84dffca45be29457839b4d3f9f391fff6",
-    "tables": {
-      "item": {
-        "columns": {
-          "category": {
-            "codecId": "pg/text@1",
-            "nativeType": "text",
-            "nullable": false
-          },
-          "description": {
-            "codecId": "pg/text@1",
-            "nativeType": "text",
-            "nullable": false
-          },
-          "id": {
-            "codecId": "pg/int4@1",
-            "nativeType": "int4",
-            "nullable": false
-          },
-          "rating": {
-            "codecId": "pg/int4@1",
-            "nativeType": "int4",
-            "nullable": false
+    "namespaces": {
+      "public": {
+        "entries": {
+          "table": {
+            "item": {
+              "columns": {
+                "category": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "description": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "embedding": {
+                  "codecId": "paradedb/vector@1",
+                  "nativeType": "vector",
+                  "nullable": false,
+                  "typeParams": {
+                    "dimensions": 3
+                  }
+                },
+                "id": {
+                  "codecId": "pg/int4@1",
+                  "nativeType": "int4",
+                  "nullable": false
+                },
+                "rating": {
+                  "codecId": "pg/int4@1",
+                  "nativeType": "int4",
+                  "nullable": false
+                }
+              },
+              "foreignKeys": [],
+              "indexes": [
+                {
+                  "columns": [
+                    "category",
+                    "description",
+                    "id",
+                    "rating"
+                  ],
+                  "name": "item_bm25_idx",
+                  "options": {
+                    "key_field": "id"
+                  },
+                  "type": "bm25"
+                }
+              ],
+              "primaryKey": {
+                "columns": [
+                  "id"
+                ]
+              },
+              "uniques": []
+            }
           }
         },
-        "foreignKeys": [],
-        "indexes": [
-          {
-            "columns": [
-              "category",
-              "description",
-              "id",
-              "rating"
-            ],
-            "name": "item_bm25_idx",
-            "options": {
-              "key_field": "id"
-            },
-            "type": "bm25"
-          }
-        ],
-        "primaryKey": {
-          "columns": [
-            "id"
-          ]
-        },
-        "uniques": []
+        "id": "public",
+        "kind": "postgres-schema"
       }
-    }
+    },
+    "storageHash": "sha256:4de46a86a05ed989a56dc452cdb4906e7822c33bb28cd0c73803592ea30ca55b"
   },
   "capabilities": {
     "postgres": {
+      "distinctOn": true,
       "jsonAgg": true,
       "lateral": true,
       "limit": true,
       "orderBy": true,
       "paradedb/bm25": true,
+      "paradedb/vector": true,
       "returning": true
     },
     "sql": {
       "defaultInInsert": true,
       "enums": true,
-      "returning": true
+      "lateral": true,
+      "returning": true,
+      "scalarList": true
     }
   },
   "extensionPacks": {
     "paradedb": {
       "capabilities": {
         "postgres": {
-          "paradedb/bm25": true
+          "paradedb/bm25": true,
+          "paradedb/vector": true
         }
       },
       "familyId": "sql",
@@ -136,13 +180,28 @@
       "kind": "extension",
       "targetId": "postgres",
       "types": {
+        "codecTypes": {
+          "import": {
+            "alias": "ParadeDbCodecTypes",
+            "named": "CodecTypes",
+            "package": "@prisma-next/extension-paradedb/codec-types"
+          }
+        },
         "queryOperationTypes": {
           "import": {
             "alias": "ParadeDbQueryOperationTypes",
             "named": "QueryOperationTypes",
             "package": "@prisma-next/extension-paradedb/operation-types"
           }
-        }
+        },
+        "storage": [
+          {
+            "familyId": "sql",
+            "nativeType": "vector",
+            "targetId": "postgres",
+            "typeId": "paradedb/vector@1"
+          }
+        ]
       },
       "version": "0.0.1"
     }
