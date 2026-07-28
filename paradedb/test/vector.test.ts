@@ -1,6 +1,6 @@
 import { OperationExpr, ParamRef } from '@prisma-next/sql-relational-core/ast';
 import { describe, expect, it } from 'vitest';
-import { renderBm25IndexDdl, VECTOR_DISTANCE_OPERATORS, VECTOR_OPCLASSES } from '../src/exports/ddl';
+import { renderParadeDbIndexDdl, VECTOR_DISTANCE_OPERATORS, VECTOR_OPCLASSES } from '../src/exports/ddl';
 import { paradedbPackMeta } from '../src/core/descriptor-meta';
 import {
   expandVectorNativeType,
@@ -107,21 +107,21 @@ describe('expandVectorNativeType', () => {
   });
 });
 
-describe('renderBm25IndexDdl', () => {
+describe('renderParadeDbIndexDdl', () => {
   it('renders vector columns with each metric opclass (L2 default)', () => {
     expect(
-      renderBm25IndexDdl({
+      renderParadeDbIndexDdl({
         name: 'item_bm25_idx',
         table: 'item',
         keyField: 'id',
         columns: ['id', 'description', { column: 'embedding' }],
       }),
     ).toBe(
-      'CREATE INDEX "item_bm25_idx" ON "item" USING bm25 ("id", "description", "embedding" vector_l2_ops) WITH (key_field = \'id\')',
+      'CREATE INDEX "item_bm25_idx" ON "item" USING paradedb ("id", "description", "embedding" vector_l2_ops) WITH (key_field = \'id\')',
     );
 
     expect(
-      renderBm25IndexDdl({
+      renderParadeDbIndexDdl({
         name: 'idx',
         table: 'item',
         schema: 'public',
@@ -129,11 +129,11 @@ describe('renderBm25IndexDdl', () => {
         columns: ['id', { column: 'embedding', metric: 'cosine' }],
       }),
     ).toBe(
-      'CREATE INDEX "idx" ON "public"."item" USING bm25 ("id", "embedding" vector_cosine_ops) WITH (key_field = \'id\')',
+      'CREATE INDEX "idx" ON "public"."item" USING paradedb ("id", "embedding" vector_cosine_ops) WITH (key_field = \'id\')',
     );
 
     expect(
-      renderBm25IndexDdl({
+      renderParadeDbIndexDdl({
         name: 'idx',
         table: 'item',
         keyField: 'id',
@@ -144,13 +144,13 @@ describe('renderBm25IndexDdl', () => {
 
   it('requires the key_field to be listed in columns', () => {
     expect(() =>
-      renderBm25IndexDdl({ name: 'idx', table: 'item', keyField: 'id', columns: ['embedding'] }),
+      renderParadeDbIndexDdl({ name: 'idx', table: 'item', keyField: 'id', columns: ['embedding'] }),
     ).toThrow('key_field "id" must be listed in columns');
   });
 
   it('rejects empty column lists', () => {
     expect(() =>
-      renderBm25IndexDdl({ name: 'idx', table: 'item', keyField: 'id', columns: [] }),
+      renderParadeDbIndexDdl({ name: 'idx', table: 'item', keyField: 'id', columns: [] }),
     ).toThrow('at least one column');
   });
 

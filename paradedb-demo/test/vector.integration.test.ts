@@ -1,5 +1,5 @@
 import 'dotenv/config';
-import { renderBm25IndexDdl } from '@prisma-next/extension-paradedb/ddl';
+import { renderParadeDbIndexDdl } from '@prisma-next/extension-paradedb/ddl';
 import pg from 'pg';
 import { beforeAll, describe, expect, it } from 'vitest';
 import { loadAppConfig } from '../src/app-config';
@@ -33,34 +33,42 @@ describe.skipIf(SKIP)('paradedb vector integration', () => {
     expect(rows[0]?.distance).toBeCloseTo(distanceL2(query, [0.2, 0.1, 0.85]), 6);
   });
 
-  // Vector columns inside bm25 indexes need pg_search from branch
-  // `mvp/vector-search` (paradedb/paradedb#5685); released builds reject the
-  // DDL, so this Top-K pushdown coverage skips against current releases.
-  it('creates a bm25 index over the vector column when pg_search supports it', async (ctx) => {
+  // Vector columns inside ParadeDB indexes require pg_search 0.25.0+
+  // (paradedb/paradedb#5685); older builds reject the DDL, so this Top-K
+  // pushdown coverage skips there. A scratch table is used because a relation
+  // may only have one ParadeDB index and `item` already carries the
+  // contract-declared one.
+  it('creates a ParadeDB index over a vector column when pg_search supports it', async (ctx) => {
     const { databaseUrl } = loadAppConfig();
     const client = new pg.Client({ connectionString: databaseUrl });
     await client.connect();
-    const ddl = renderBm25IndexDdl({
-      name: 'item_vector_bm25_idx',
-      table: 'item',
-      schema: 'public',
-      keyField: 'id',
-      columns: ['id', { column: 'embedding', metric: 'l2' }],
-    });
     try {
+      await client.query(
+        'CREATE TABLE public.vector_idx_probe (id int4 PRIMARY KEY, embedding vector(3) NOT NULL)',
+      );
+      await client.query(
+        `INSERT INTO public.vector_idx_probe VALUES (1, '[1,0,0]'), (2, '[0.1,0.9,0.1]'), (3, '[0,0,1]')`,
+      );
+      const ddl = renderParadeDbIndexDdl({
+        name: 'vector_idx_probe_idx',
+        table: 'vector_idx_probe',
+        schema: 'public',
+        keyField: 'id',
+        columns: ['id', { column: 'embedding', metric: 'l2' }],
+      });
       try {
         await client.query(ddl);
       } catch (error) {
         ctx.skip(
-          `pg_search build does not support vector columns in bm25 indexes (needs branch mvp/vector-search): ${String(error)}`,
+          `pg_search build does not support vector columns in its indexes (requires pg_search 0.25.0+): ${String(error)}`,
         );
       }
       const result = await client.query(
-        `SELECT id FROM public.item WHERE id @@@ pdb.all() ORDER BY embedding <-> '[0.1,0.9,0.1]' LIMIT 2`,
+        `SELECT id FROM public.vector_idx_probe WHERE id @@@ pdb.all() ORDER BY embedding <-> '[0.1,0.9,0.1]' LIMIT 2`,
       );
       expect(result.rows[0]?.id).toBe(2);
     } finally {
-      await client.query('DROP INDEX IF EXISTS public.item_vector_bm25_idx');
+      await client.query('DROP TABLE IF EXISTS public.vector_idx_probe CASCADE');
       await client.end();
     }
   });

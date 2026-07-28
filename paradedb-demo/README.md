@@ -11,9 +11,11 @@ Exercises:
 - `vectorColumn(3)` — native pgvector `vector(3)` column with `number[]` ⇄ `'[x,y,z]'` codec.
 - `paradeDbAll(keyCol)` + `paradeDbL2Distance(vecCol, query)` — vector Top-K (`@@@ pdb.all()` predicate, `<->` ORDER BY, LIMIT).
 - `CREATE EXTENSION pg_search` / `vector` via the docker init scripts (`init/*.sql`).
-- Automatic `CREATE INDEX ... USING bm25 (...) WITH (key_field='...')` via upstream's index-type registry.
+- Automatic `CREATE INDEX ... USING paradedb (...) WITH (key_field='...')` via upstream's index-type registry.
 
-The bm25 index covers the text columns only: released pg_search builds reject vector columns in bm25 indexes (needs branch `mvp/vector-search`, paradedb/paradedb#5685), so vector Top-K runs unaccelerated here. The gated integration test in `test/vector.integration.test.ts` exercises the vector-in-bm25 index (via `renderBm25IndexDdl`) and skips with a clear reason on released builds.
+Requires a pg_search 0.25.0+ server, which registers the `paradedb` index access method; the docker image pin may lag behind, in which case `pnpm db:init` fails until the image catches up.
+
+The ParadeDB index covers the text columns only: vector columns in ParadeDB indexes also need pg_search 0.25.0+ (paradedb/paradedb#5685), so on older builds vector Top-K runs unaccelerated. The gated integration test in `test/vector.integration.test.ts` exercises the vector-in-index DDL (via `renderParadeDbIndexDdl`) and skips with a clear reason when the server lacks support.
 
 ## Run it
 
@@ -35,7 +37,7 @@ pnpm start -- vector '0.1,0.9,0.1' 3
 pnpm test
 ```
 
-`pnpm db:init` produces the BM25 index directly from the `constraints.index([...], { type: 'bm25', options: { key_field: 'id' } })` declaration in `prisma/contract.ts`.
+`pnpm db:init` produces the ParadeDB index directly from the `constraints.index([...], { type: 'paradedb', options: { key_field: 'id' } })` declaration in `prisma/contract.ts`.
 
 Teardown:
 

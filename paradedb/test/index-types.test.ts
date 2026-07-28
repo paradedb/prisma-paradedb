@@ -18,41 +18,41 @@ describe('ParadeDB extension', () => {
       });
     });
 
-    it('exposes the bm25 entry in indexTypes', () => {
+    it('exposes the paradedb entry in indexTypes', () => {
       expect(paradedbPackMeta.indexTypes.entries).toHaveLength(1);
-      expect(paradedbPackMeta.indexTypes.entries[0]?.type).toBe('bm25');
+      expect(paradedbPackMeta.indexTypes.entries[0]?.type).toBe('paradedb');
     });
   });
 
   describe('paradedbIndexTypes', () => {
-    it('declares a single bm25 entry', () => {
-      expect(paradedbIndexTypes.entries.map((e) => e.type)).toEqual(['bm25']);
+    it('declares a single paradedb entry', () => {
+      expect(paradedbIndexTypes.entries.map((e) => e.type)).toEqual(['paradedb']);
     });
 
-    it('validates bm25 options with a key_field string', () => {
+    it('validates paradedb options with a key_field string', () => {
       const entry = paradedbIndexTypes.entries[0];
-      if (!entry) throw new Error('expected bm25 entry');
+      if (!entry) throw new Error('expected paradedb entry');
       const result = entry.options({ key_field: 'id' });
       expect(result instanceof type.errors).toBe(false);
     });
 
-    it('rejects bm25 options without key_field', () => {
+    it('rejects paradedb options without key_field', () => {
       const entry = paradedbIndexTypes.entries[0];
-      if (!entry) throw new Error('expected bm25 entry');
+      if (!entry) throw new Error('expected paradedb entry');
       const result = entry.options({});
       expect(result instanceof type.errors).toBe(true);
     });
 
-    it('rejects bm25 options with extra unknown keys', () => {
+    it('rejects paradedb options with extra unknown keys', () => {
       const entry = paradedbIndexTypes.entries[0];
-      if (!entry) throw new Error('expected bm25 entry');
+      if (!entry) throw new Error('expected paradedb entry');
       const result = entry.options({ key_field: 'id', extra: 'nope' });
       expect(result instanceof type.errors).toBe(true);
     });
 
-    it('rejects bm25 options where key_field is not a string', () => {
+    it('rejects paradedb options where key_field is not a string', () => {
       const entry = paradedbIndexTypes.entries[0];
-      if (!entry) throw new Error('expected bm25 entry');
+      if (!entry) throw new Error('expected paradedb entry');
       const result = entry.options({ key_field: 42 });
       expect(result instanceof type.errors).toBe(true);
     });

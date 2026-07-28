@@ -4,7 +4,9 @@ ParadeDB full-text and vector search extension pack for Prisma Next.
 
 ## Overview
 
-This extension pack registers a `'bm25'` index type with the SQL family's index-type registry, so contracts can author BM25 full-text search indexes via the standard `constraints.index(...)` surface and the Postgres adapter emits `CREATE INDEX ... USING bm25 WITH (...)` DDL.
+This extension pack registers a `'paradedb'` index type with the SQL family's index-type registry, so contracts can author BM25 full-text search indexes via the standard `constraints.index(...)` surface and the Postgres adapter emits `CREATE INDEX ... USING paradedb WITH (...)` DDL.
+
+Requires pg_search 0.25.0+, which registers the `paradedb` index access method. This release renames the previously bm25-named API (`renderBm25IndexDdl`, the `'bm25'` index type, ...) to paradedb names; older servers and the old names are not supported.
 
 The v1 surface covers the `key_field` storage parameter only. Per-field tokenizer and column configuration is deferred to expression-index support.
 
@@ -12,10 +14,10 @@ It also provides native pgvector `vector(n)` column support (no pgvector ORM lib
 
 ## Responsibilities
 
-- **bm25 index registration**: declares a `'bm25'` entry via `defineIndexTypes()` carrying an arktype validator for the bm25 options shape
+- **Index registration**: declares a `'paradedb'` entry via `defineIndexTypes()` carrying an arktype validator for the options shape
 - **Vector columns**: `vectorColumn(dimensions)` maps to `vector(n)` DDL; the `paradedb/vector@1` codec serializes `number[]` ⇄ `'[1,2,3]'` in both directions
 - **Vector queries**: `paradeDbL2Distance` (`<->`), `paradeDbCosineDistance` (`<=>`), `paradeDbInnerProduct` (`<#>`), and `paradeDbAll` (`@@@ pdb.all()`)
-- **Vector index DDL**: `renderBm25IndexDdl(...)` renders `CREATE INDEX ... USING bm25` statements with per-column vector opclasses for raw migrations
+- **Vector index DDL**: `renderParadeDbIndexDdl(...)` renders `CREATE INDEX ... USING paradedb` statements with per-column vector opclasses for raw migrations
 - **Extension descriptor**: declares the `paradedb/bm25` and `paradedb/vector` capabilities for contract-level feature detection
 - **Pack ref export**: ships a pure `/pack` entrypoint for TypeScript contract authoring
 
@@ -35,7 +37,7 @@ pnpm add @prisma-next/extension-paradedb
 
 ### Contract definition
 
-Author bm25 indexes via the standard `constraints.index(...)` surface; the registered `'bm25'` entry narrows `options` per-`type`:
+Author ParadeDB indexes via the standard `constraints.index(...)` surface; the registered `'paradedb'` entry narrows `options` per-`type`:
 
 ```typescript
 import { int4Column, textColumn } from '@prisma-next/adapter-postgres/column-types';
@@ -58,8 +60,8 @@ export const contract = defineContract({
       table: 'items',
       indexes: [
         constraints.index([cols.body], {
-          name: 'item_body_bm25_idx',
-          type: 'bm25',
+          name: 'item_body_search_idx',
+          type: 'paradedb',
           options: { key_field: 'id' },
         }),
       ],
@@ -74,7 +76,7 @@ ParadeDB BM25 indexes require a `key_field` — a unique column that identifies 
 
 ## Vector search
 
-ParadeDB indexes pgvector `vector` columns inside its own bm25 access method. This pack ships the minimal pgvector surface natively — do not install pgvector ORM packages alongside it. Vector-in-bm25 indexing requires a pg_search build from branch `mvp/vector-search` ([paradedb/paradedb#5685](https://github.com/paradedb/paradedb/issues/5685)); on released builds the queries below still run, but without Top-K index acceleration. The `vector` (pgvector) extension must be installed for the column type itself.
+ParadeDB indexes pgvector `vector` columns inside its own index access method. This pack ships the minimal pgvector surface natively — do not install pgvector ORM packages alongside it. Vector-in-index support requires pg_search 0.25.0+ ([paradedb/paradedb#5685](https://github.com/paradedb/paradedb/issues/5685)); on older builds the queries below still run, but without Top-K index acceleration. The `vector` (pgvector) extension must be installed for the column type itself.
 
 ### Vector column declaration
 
@@ -94,18 +96,18 @@ The column emits `vector(3)` DDL and reads/writes `number[]` values.
 
 ### Index creation
 
-Vector columns listed in a `constraints.index([...], { type: 'bm25', ... })` declaration get the bm25 AM's default opclass, `vector_l2_ops` (L2). The contract index surface cannot express per-column opclasses yet, so for the cosine or inner-product metric render the DDL for a raw migration:
+Vector columns listed in a `constraints.index([...], { type: 'paradedb', ... })` declaration get the AM's default opclass, `vector_l2_ops` (L2). The contract index surface cannot express per-column opclasses yet, so for the cosine or inner-product metric render the DDL for a raw migration:
 
 ```typescript
-import { renderBm25IndexDdl } from '@prisma-next/extension-paradedb/ddl';
+import { renderParadeDbIndexDdl } from '@prisma-next/extension-paradedb/ddl';
 
-renderBm25IndexDdl({
+renderParadeDbIndexDdl({
   name: 'item_vector_idx',
   table: 'item',
   keyField: 'id',
   columns: ['id', 'description', { column: 'embedding', metric: 'cosine' }],
 });
-// CREATE INDEX "item_vector_idx" ON "item" USING bm25
+// CREATE INDEX "item_vector_idx" ON "item" USING paradedb
 //   ("id", "description", "embedding" vector_cosine_ops) WITH (key_field = 'id')
 ```
 
@@ -145,7 +147,7 @@ The ORDER BY distance operator must match the index opclass metric; a mismatch d
 ## Not yet implemented
 
 - Per-column / per-expression tokenizer configuration (deferred to expression-index support)
-- Per-column vector opclasses in `constraints.index(...)` (use `renderBm25IndexDdl` meanwhile)
+- Per-column vector opclasses in `constraints.index(...)` (use `renderParadeDbIndexDdl` meanwhile)
 - `halfvec` / `sparsevec` column types
 - `CREATE EXTENSION pg_search` / `CREATE EXTENSION vector` via migration planner (removed with upstream's `databaseDependencies` hook; install the extensions before `db init`)
 - Aggregation and highlight functions

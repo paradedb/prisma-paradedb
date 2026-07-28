@@ -130,7 +130,7 @@
                   "options": {
                     "key_field": "id"
                   },
-                  "type": "bm25"
+                  "type": "paradedb"
                 }
               ],
               "primaryKey": {
@@ -146,7 +146,7 @@
         "kind": "postgres-schema"
       }
     },
-    "storageHash": "sha256:4de46a86a05ed989a56dc452cdb4906e7822c33bb28cd0c73803592ea30ca55b"
+    "storageHash": "sha256:a9d70bb2a26470e9db304a036763fda7d1bc77158069e9de655e91f8126c705f"
   },
   "capabilities": {
     "postgres": {

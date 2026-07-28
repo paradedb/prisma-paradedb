@@ -1,8 +1,8 @@
 export {
-  type Bm25IndexDdlOptions,
-  type Bm25VectorIndexColumn,
+  type ParadeDbIndexDdlOptions,
+  type ParadeDbVectorIndexColumn,
   type VectorMetric,
-  renderBm25IndexDdl,
+  renderParadeDbIndexDdl,
   VECTOR_DISTANCE_OPERATORS,
   VECTOR_OPCLASSES,
-} from '../core/bm25-index-ddl';
+} from '../core/paradedb-index-ddl';
