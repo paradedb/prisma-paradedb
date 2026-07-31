@@ -32,7 +32,7 @@ import type {
 } from '@prisma-next/contract/types';
 
 export type StorageHash =
-  StorageHashBase<'sha256:a9d70bb2a26470e9db304a036763fda7d1bc77158069e9de655e91f8126c705f'>;
+  StorageHashBase<'sha256:ea78893166d4740be998c775edc44398734be3a0c193af13815047ad7e7ca1f2'>;
 export type ExecutionHash = ExecutionHashBase<string>;
 export type ProfileHash =
   ProfileHashBase<'sha256:9c8aa3114e84ed3b7ea2bd57526d9c2e1bf7c5292be694e9d3801f566fda7ccb'>;
@@ -139,7 +139,13 @@ type ContractBase = Omit<
               uniques: readonly [];
               indexes: readonly [
                 {
-                  readonly columns: readonly ['category', 'description', 'id', 'rating'];
+                  readonly columns: readonly [
+                    'category',
+                    'description',
+                    'embedding',
+                    'id',
+                    'rating',
+                  ];
                   readonly name: 'item_bm25_idx';
                   readonly type: 'paradedb';
                   readonly options: { readonly key_field: 'id' };

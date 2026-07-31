@@ -1,6 +1,6 @@
 services:
   paradedb:
-    image: paradedb/paradedb:latest
+    image: paradedb/paradedb:0.25.0
     ports:
       - "5434:5432"
     environment:

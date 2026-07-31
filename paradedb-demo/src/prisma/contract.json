@@ -123,6 +123,7 @@
                   "columns": [
                     "category",
                     "description",
+                    "embedding",
                     "id",
                     "rating"
                   ],
@@ -146,7 +147,7 @@
         "kind": "postgres-schema"
       }
     },
-    "storageHash": "sha256:a9d70bb2a26470e9db304a036763fda7d1bc77158069e9de655e91f8126c705f"
+    "storageHash": "sha256:ea78893166d4740be998c775edc44398734be3a0c193af13815047ad7e7ca1f2"
   },
   "capabilities": {
     "postgres": {
