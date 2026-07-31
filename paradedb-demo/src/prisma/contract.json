@@ -123,10 +123,11 @@
                   "columns": [
                     "category",
                     "description",
+                    "embedding",
                     "id",
                     "rating"
                   ],
-                  "name": "item_bm25_idx",
+                  "name": "item_search_idx",
                   "options": {
                     "key_field": "id"
                   },
@@ -146,7 +147,7 @@
         "kind": "postgres-schema"
       }
     },
-    "storageHash": "sha256:a9d70bb2a26470e9db304a036763fda7d1bc77158069e9de655e91f8126c705f"
+    "storageHash": "sha256:a4604c87dfba0bd19753c2fb839251de8614e40e9fdbf5f3a1916edbdfe10211"
   },
   "capabilities": {
     "postgres": {

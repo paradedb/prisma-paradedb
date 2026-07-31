@@ -13,9 +13,9 @@ Exercises:
 - `CREATE EXTENSION pg_search` / `vector` via the docker init scripts (`init/*.sql`).
 - Automatic `CREATE INDEX ... USING paradedb (...) WITH (key_field='...')` via upstream's index-type registry.
 
-Requires a pg_search 0.25.0+ server, which registers the `paradedb` index access method; the docker image pin may lag behind, in which case `pnpm db:init` fails until the image catches up.
+Requires a pg_search 0.25.0+ server, which registers the `paradedb` index access method; the docker compose file pins `paradedb/paradedb:0.25.0`.
 
-The ParadeDB index covers the text columns only: vector columns in ParadeDB indexes also need pg_search 0.25.0+ (paradedb/paradedb#5685), so on older builds vector Top-K runs unaccelerated. The gated integration test in `test/vector.integration.test.ts` exercises the vector-in-index DDL (via `renderParadeDbIndexDdl`) and skips with a clear reason when the server lacks support.
+The ParadeDB index covers the text columns and the `embedding` vector column (vector-in-index needs pg_search 0.25.0+, paradedb/paradedb#5685), so the demo's vector Top-K query is index-accelerated. The integration test in `test/vector.integration.test.ts` also exercises the standalone vector-in-index DDL via `renderParadeDbIndexDdl`, and skips with a clear reason if the server lacks support.
 
 ## Run it
 
