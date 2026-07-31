@@ -111,13 +111,13 @@ describe('renderParadeDbIndexDdl', () => {
   it('renders vector columns with each metric opclass (L2 default)', () => {
     expect(
       renderParadeDbIndexDdl({
-        name: 'item_bm25_idx',
+        name: 'item_search_idx',
         table: 'item',
         keyField: 'id',
         columns: ['id', 'description', { column: 'embedding' }],
       }),
     ).toBe(
-      'CREATE INDEX "item_bm25_idx" ON "item" USING paradedb ("id", "description", "embedding" vector_l2_ops) WITH (key_field = \'id\')',
+      'CREATE INDEX "item_search_idx" ON "item" USING paradedb ("id", "description", "embedding" vector_l2_ops) WITH (key_field = \'id\')',
     );
 
     expect(

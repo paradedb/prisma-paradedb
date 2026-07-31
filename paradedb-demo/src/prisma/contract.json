@@ -127,7 +127,7 @@
                     "id",
                     "rating"
                   ],
-                  "name": "item_bm25_idx",
+                  "name": "item_search_idx",
                   "options": {
                     "key_field": "id"
                   },
@@ -147,7 +147,7 @@
         "kind": "postgres-schema"
       }
     },
-    "storageHash": "sha256:ea78893166d4740be998c775edc44398734be3a0c193af13815047ad7e7ca1f2"
+    "storageHash": "sha256:a4604c87dfba0bd19753c2fb839251de8614e40e9fdbf5f3a1916edbdfe10211"
   },
   "capabilities": {
     "postgres": {

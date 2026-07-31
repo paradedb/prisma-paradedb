@@ -36,7 +36,7 @@ export const contract = defineContract(
               {
                 type: 'paradedb',
                 options: { key_field: 'id' },
-                name: 'item_bm25_idx',
+                name: 'item_search_idx',
               },
             ),
           ],
