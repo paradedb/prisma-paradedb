@@ -20,6 +20,10 @@ updates:
     ignore:
       - dependency-name: "*"
         update-types: ["version-update:semver-patch"]
+      # tsdown's dts plugin cannot load TypeScript 7 (rolldown-plugin-dts
+      # crashes at build); keep 5.x until tsdown supports TS 7.
+      - dependency-name: "typescript"
+        update-types: ["version-update:semver-major"]
     groups:
       npm-dependencies:
         patterns:
