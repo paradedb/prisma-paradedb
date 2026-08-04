@@ -16,28 +16,28 @@ importers:
     dependencies:
       '@prisma-next/contract':
         specifier: 0.16.0
-        version: 0.16.0(typescript@7.0.2)
+        version: 0.16.0(typescript@5.9.3)
       '@prisma-next/contract-authoring':
         specifier: 0.16.0
-        version: 0.16.0(typescript@7.0.2)
+        version: 0.16.0(typescript@5.9.3)
       '@prisma-next/family-sql':
         specifier: 0.16.0
-        version: 0.16.0(typescript@7.0.2)
+        version: 0.16.0(typescript@5.9.3)
       '@prisma-next/framework-components':
         specifier: 0.16.0
-        version: 0.16.0(typescript@7.0.2)
+        version: 0.16.0(typescript@5.9.3)
       '@prisma-next/sql-contract':
         specifier: 0.16.0
-        version: 0.16.0(typescript@7.0.2)
+        version: 0.16.0(typescript@5.9.3)
       '@prisma-next/sql-operations':
         specifier: 0.16.0
-        version: 0.16.0(typescript@7.0.2)
+        version: 0.16.0(typescript@5.9.3)
       '@prisma-next/sql-relational-core':
         specifier: 0.16.0
-        version: 0.16.0(typescript@7.0.2)
+        version: 0.16.0(typescript@5.9.3)
       '@prisma-next/sql-runtime':
         specifier: 0.16.0
-        version: 0.16.0(typescript@7.0.2)
+        version: 0.16.0(typescript@5.9.3)
       '@standard-schema/spec':
         specifier: ^1.1.0
         version: 1.1.0
@@ -47,22 +47,22 @@ importers:
     devDependencies:
       '@prisma-next/adapter-postgres':
         specifier: 0.16.0
-        version: 0.16.0(typanion@3.14.0)(typescript@7.0.2)
+        version: 0.16.0(typanion@3.14.0)(typescript@5.9.3)
       '@prisma-next/operations':
         specifier: 0.16.0
-        version: 0.16.0(typescript@7.0.2)
+        version: 0.16.0(typescript@5.9.3)
       '@prisma-next/sql-contract-ts':
         specifier: 0.16.0
-        version: 0.16.0(typescript@7.0.2)
+        version: 0.16.0(typescript@5.9.3)
       tsdown:
         specifier: 0.22.0
-        version: 0.22.0(tsx@4.23.1)(typescript@7.0.2)(unrun@0.3.1)
+        version: 0.22.0(tsx@4.23.1)(typescript@5.9.3)(unrun@0.3.1)
       typanion:
         specifier: 3.14.0
         version: 3.14.0
       typescript:
-        specifier: 7.0.2
-        version: 7.0.2
+        specifier: 5.9.3
+        version: 5.9.3
       unrun:
         specifier: ^0.3.1
         version: 0.3.1
@@ -1577,6 +1577,11 @@ packages:
   typanion@3.14.0:
     resolution: {integrity: sha512-ZW/lVMRabETuYCd9O9ZvMhAh8GslSqaUjxmK/JLPCh6l73CvLBiuXswj/+7LdnWOgYsQ130FqLzFz5aGT4I3Ug==}
 
+  typescript@5.9.3:
+    resolution: {integrity: sha512-jl1vZzPDinLr9eUt3J/t7V6FgNEw9QjvBPdysz9KfQDD41fQrC2Y4vKQdiaUpFT4bXlb1RHhLpp8wtm6M5TgSw==}
+    engines: {node: '>=14.17'}
+    hasBin: true
+
   typescript@7.0.2:
     resolution: {integrity: sha512-8FYau96o3NKOhbjKi/qNvG/W5jhzxkbdm5sj9AbZ/5T5sWqn3hJgLfGx27sRKZWTvyzCP8dLRBTf5tBTSRVUNA==}
     engines: {node: '>=16.20.0'}
@@ -1908,6 +1913,31 @@ snapshots:
 
   '@oxc-project/types@0.135.0': {}
 
+  '@prisma-next/adapter-postgres@0.16.0(typanion@3.14.0)(typescript@5.9.3)':
+    dependencies:
+      '@prisma-next/contract': 0.16.0(typescript@5.9.3)
+      '@prisma-next/contract-authoring': 0.16.0(typescript@5.9.3)
+      '@prisma-next/errors': 0.16.0(typescript@5.9.3)
+      '@prisma-next/family-sql': 0.16.0(typescript@5.9.3)
+      '@prisma-next/framework-components': 0.16.0(typescript@5.9.3)
+      '@prisma-next/ids': 0.16.0(typescript@5.9.3)
+      '@prisma-next/psl-parser': 0.16.0(typescript@5.9.3)
+      '@prisma-next/sql-contract': 0.16.0(typescript@5.9.3)
+      '@prisma-next/sql-contract-psl': 0.16.0(typescript@5.9.3)
+      '@prisma-next/sql-contract-ts': 0.16.0(typescript@5.9.3)
+      '@prisma-next/sql-operations': 0.16.0(typescript@5.9.3)
+      '@prisma-next/sql-relational-core': 0.16.0(typescript@5.9.3)
+      '@prisma-next/sql-runtime': 0.16.0(typescript@5.9.3)
+      '@prisma-next/sql-schema-ir': 0.16.0(typescript@5.9.3)
+      '@prisma-next/target-postgres': 0.16.0(typanion@3.14.0)(typescript@5.9.3)
+      '@prisma-next/utils': 0.16.0(typescript@5.9.3)
+      arktype: 2.2.3
+    optionalDependencies:
+      typescript: 5.9.3
+    transitivePeerDependencies:
+      - magicast
+      - typanion
+
   '@prisma-next/adapter-postgres@0.16.0(typanion@3.14.0)(typescript@7.0.2)':
     dependencies:
       '@prisma-next/contract': 0.16.0(typescript@7.0.2)
@@ -1933,6 +1963,19 @@ snapshots:
       - magicast
       - typanion
 
+  '@prisma-next/cli-telemetry@0.16.0(typescript@5.9.3)':
+    dependencies:
+      '@prisma-next/config': 0.16.0(typescript@5.9.3)
+      '@prisma-next/utils': 0.16.0(typescript@5.9.3)
+      '@vercel/detect-agent': 1.2.3
+      arktype: 2.2.3
+      c12: 3.3.4
+      pathe: 2.0.3
+    optionalDependencies:
+      typescript: 5.9.3
+    transitivePeerDependencies:
+      - magicast
+
   '@prisma-next/cli-telemetry@0.16.0(typescript@7.0.2)':
     dependencies:
       '@prisma-next/config': 0.16.0(typescript@7.0.2)
@@ -1945,6 +1988,40 @@ snapshots:
       typescript: 7.0.2
     transitivePeerDependencies:
       - magicast
+
+  '@prisma-next/cli@0.16.0(typanion@3.14.0)(typescript@5.9.3)':
+    dependencies:
+      '@clack/prompts': 1.7.0
+      '@prisma-next/cli-telemetry': 0.16.0(typescript@5.9.3)
+      '@prisma-next/config': 0.16.0(typescript@5.9.3)
+      '@prisma-next/config-loader': 0.16.0(typescript@5.9.3)
+      '@prisma-next/contract': 0.16.0(typescript@5.9.3)
+      '@prisma-next/emitter': 0.16.0(typescript@5.9.3)
+      '@prisma-next/errors': 0.16.0(typescript@5.9.3)
+      '@prisma-next/framework-components': 0.16.0(typescript@5.9.3)
+      '@prisma-next/language-server': 0.16.0(typescript@5.9.3)
+      '@prisma-next/migration-tools': 0.16.0(typescript@5.9.3)
+      '@prisma-next/psl-parser': 0.16.0(typescript@5.9.3)
+      '@prisma-next/psl-printer': 0.16.0(typescript@5.9.3)
+      '@prisma-next/utils': 0.16.0(typescript@5.9.3)
+      arktype: 2.2.3
+      ci-info: 4.4.0
+      clipanion: 4.0.0-rc.4(typanion@3.14.0)
+      closest-match: 1.3.3
+      colorette: 2.0.20
+      commander: 15.0.0
+      esbuild: 0.28.1
+      jsonc-parser: 3.3.1
+      package-manager-detector: 1.8.0
+      pathe: 2.0.3
+      string-width: 8.2.2
+      strip-ansi: 7.2.0
+      wrap-ansi: 10.0.0
+    optionalDependencies:
+      typescript: 5.9.3
+    transitivePeerDependencies:
+      - magicast
+      - typanion
 
   '@prisma-next/cli@0.16.0(typanion@3.14.0)(typescript@7.0.2)':
     dependencies:
@@ -1980,6 +2057,19 @@ snapshots:
       - magicast
       - typanion
 
+  '@prisma-next/config-loader@0.16.0(typescript@5.9.3)':
+    dependencies:
+      '@prisma-next/config': 0.16.0(typescript@5.9.3)
+      '@prisma-next/emitter': 0.16.0(typescript@5.9.3)
+      '@prisma-next/errors': 0.16.0(typescript@5.9.3)
+      '@prisma-next/utils': 0.16.0(typescript@5.9.3)
+      c12: 3.3.4
+      pathe: 2.0.3
+    optionalDependencies:
+      typescript: 5.9.3
+    transitivePeerDependencies:
+      - magicast
+
   '@prisma-next/config-loader@0.16.0(typescript@7.0.2)':
     dependencies:
       '@prisma-next/config': 0.16.0(typescript@7.0.2)
@@ -1993,6 +2083,16 @@ snapshots:
     transitivePeerDependencies:
       - magicast
 
+  '@prisma-next/config@0.16.0(typescript@5.9.3)':
+    dependencies:
+      '@prisma-next/contract': 0.16.0(typescript@5.9.3)
+      '@prisma-next/framework-components': 0.16.0(typescript@5.9.3)
+      '@prisma-next/utils': 0.16.0(typescript@5.9.3)
+      arktype: 2.2.3
+      pathe: 2.0.3
+    optionalDependencies:
+      typescript: 5.9.3
+
   '@prisma-next/config@0.16.0(typescript@7.0.2)':
     dependencies:
       '@prisma-next/contract': 0.16.0(typescript@7.0.2)
@@ -2003,12 +2103,27 @@ snapshots:
     optionalDependencies:
       typescript: 7.0.2
 
+  '@prisma-next/contract-authoring@0.16.0(typescript@5.9.3)':
+    dependencies:
+      '@prisma-next/framework-components': 0.16.0(typescript@5.9.3)
+      '@prisma-next/utils': 0.16.0(typescript@5.9.3)
+    optionalDependencies:
+      typescript: 5.9.3
+
   '@prisma-next/contract-authoring@0.16.0(typescript@7.0.2)':
     dependencies:
       '@prisma-next/framework-components': 0.16.0(typescript@7.0.2)
       '@prisma-next/utils': 0.16.0(typescript@7.0.2)
     optionalDependencies:
       typescript: 7.0.2
+
+  '@prisma-next/contract@0.16.0(typescript@5.9.3)':
+    dependencies:
+      '@prisma-next/utils': 0.16.0(typescript@5.9.3)
+      '@standard-schema/spec': 1.1.0
+      arktype: 2.2.3
+    optionalDependencies:
+      typescript: 5.9.3
 
   '@prisma-next/contract@0.16.0(typescript@7.0.2)':
     dependencies:
@@ -2036,6 +2151,18 @@ snapshots:
     transitivePeerDependencies:
       - pg-native
 
+  '@prisma-next/emitter@0.16.0(typescript@5.9.3)':
+    dependencies:
+      '@prisma-next/contract': 0.16.0(typescript@5.9.3)
+      '@prisma-next/framework-components': 0.16.0(typescript@5.9.3)
+      '@prisma-next/operations': 0.16.0(typescript@5.9.3)
+      '@prisma-next/ts-render': 0.16.0(typescript@5.9.3)
+      '@prisma-next/utils': 0.16.0(typescript@5.9.3)
+      arktype: 2.2.3
+      prettier: 3.9.6
+    optionalDependencies:
+      typescript: 5.9.3
+
   '@prisma-next/emitter@0.16.0(typescript@7.0.2)':
     dependencies:
       '@prisma-next/contract': 0.16.0(typescript@7.0.2)
@@ -2048,12 +2175,39 @@ snapshots:
     optionalDependencies:
       typescript: 7.0.2
 
+  '@prisma-next/errors@0.16.0(typescript@5.9.3)':
+    dependencies:
+      '@prisma-next/framework-components': 0.16.0(typescript@5.9.3)
+      '@prisma-next/utils': 0.16.0(typescript@5.9.3)
+    optionalDependencies:
+      typescript: 5.9.3
+
   '@prisma-next/errors@0.16.0(typescript@7.0.2)':
     dependencies:
       '@prisma-next/framework-components': 0.16.0(typescript@7.0.2)
       '@prisma-next/utils': 0.16.0(typescript@7.0.2)
     optionalDependencies:
       typescript: 7.0.2
+
+  '@prisma-next/family-sql@0.16.0(typescript@5.9.3)':
+    dependencies:
+      '@prisma-next/contract': 0.16.0(typescript@5.9.3)
+      '@prisma-next/emitter': 0.16.0(typescript@5.9.3)
+      '@prisma-next/framework-components': 0.16.0(typescript@5.9.3)
+      '@prisma-next/migration-tools': 0.16.0(typescript@5.9.3)
+      '@prisma-next/operations': 0.16.0(typescript@5.9.3)
+      '@prisma-next/sql-contract': 0.16.0(typescript@5.9.3)
+      '@prisma-next/sql-contract-emitter': 0.16.0(typescript@5.9.3)
+      '@prisma-next/sql-contract-ts': 0.16.0(typescript@5.9.3)
+      '@prisma-next/sql-operations': 0.16.0(typescript@5.9.3)
+      '@prisma-next/sql-relational-core': 0.16.0(typescript@5.9.3)
+      '@prisma-next/sql-runtime': 0.16.0(typescript@5.9.3)
+      '@prisma-next/sql-schema-ir': 0.16.0(typescript@5.9.3)
+      '@prisma-next/utils': 0.16.0(typescript@5.9.3)
+      arktype: 2.2.3
+      pluralize: 8.0.0
+    optionalDependencies:
+      typescript: 5.9.3
 
   '@prisma-next/family-sql@0.16.0(typescript@7.0.2)':
     dependencies:
@@ -2075,6 +2229,17 @@ snapshots:
     optionalDependencies:
       typescript: 7.0.2
 
+  '@prisma-next/framework-components@0.16.0(typescript@5.9.3)':
+    dependencies:
+      '@prisma-next/contract': 0.16.0(typescript@5.9.3)
+      '@prisma-next/operations': 0.16.0(typescript@5.9.3)
+      '@prisma-next/ts-render': 0.16.0(typescript@5.9.3)
+      '@prisma-next/utils': 0.16.0(typescript@5.9.3)
+      '@standard-schema/spec': 1.1.0
+      arktype: 2.2.3
+    optionalDependencies:
+      typescript: 5.9.3
+
   '@prisma-next/framework-components@0.16.0(typescript@7.0.2)':
     dependencies:
       '@prisma-next/contract': 0.16.0(typescript@7.0.2)
@@ -2086,6 +2251,15 @@ snapshots:
     optionalDependencies:
       typescript: 7.0.2
 
+  '@prisma-next/ids@0.16.0(typescript@5.9.3)':
+    dependencies:
+      '@prisma-next/contract': 0.16.0(typescript@5.9.3)
+      '@prisma-next/framework-components': 0.16.0(typescript@5.9.3)
+      '@prisma-next/utils': 0.16.0(typescript@5.9.3)
+      uniku: 0.3.2
+    optionalDependencies:
+      typescript: 5.9.3
+
   '@prisma-next/ids@0.16.0(typescript@7.0.2)':
     dependencies:
       '@prisma-next/contract': 0.16.0(typescript@7.0.2)
@@ -2094,6 +2268,22 @@ snapshots:
       uniku: 0.3.2
     optionalDependencies:
       typescript: 7.0.2
+
+  '@prisma-next/language-server@0.16.0(typescript@5.9.3)':
+    dependencies:
+      '@prisma-next/config': 0.16.0(typescript@5.9.3)
+      '@prisma-next/config-loader': 0.16.0(typescript@5.9.3)
+      '@prisma-next/errors': 0.16.0(typescript@5.9.3)
+      '@prisma-next/framework-components': 0.16.0(typescript@5.9.3)
+      '@prisma-next/psl-parser': 0.16.0(typescript@5.9.3)
+      '@prisma-next/utils': 0.16.0(typescript@5.9.3)
+      pathe: 2.0.3
+      vscode-languageserver: 10.1.0
+      vscode-languageserver-textdocument: 1.0.12
+    optionalDependencies:
+      typescript: 5.9.3
+    transitivePeerDependencies:
+      - magicast
 
   '@prisma-next/language-server@0.16.0(typescript@7.0.2)':
     dependencies:
@@ -2111,6 +2301,17 @@ snapshots:
     transitivePeerDependencies:
       - magicast
 
+  '@prisma-next/migration-tools@0.16.0(typescript@5.9.3)':
+    dependencies:
+      '@prisma-next/contract': 0.16.0(typescript@5.9.3)
+      '@prisma-next/framework-components': 0.16.0(typescript@5.9.3)
+      '@prisma-next/utils': 0.16.0(typescript@5.9.3)
+      arktype: 2.2.3
+      pathe: 2.0.3
+      prettier: 3.9.6
+    optionalDependencies:
+      typescript: 5.9.3
+
   '@prisma-next/migration-tools@0.16.0(typescript@7.0.2)':
     dependencies:
       '@prisma-next/contract': 0.16.0(typescript@7.0.2)
@@ -2121,6 +2322,10 @@ snapshots:
       prettier: 3.9.6
     optionalDependencies:
       typescript: 7.0.2
+
+  '@prisma-next/operations@0.16.0(typescript@5.9.3)':
+    optionalDependencies:
+      typescript: 5.9.3
 
   '@prisma-next/operations@0.16.0(typescript@7.0.2)':
     optionalDependencies:
@@ -2153,6 +2358,15 @@ snapshots:
       - pg-native
       - typanion
 
+  '@prisma-next/psl-parser@0.16.0(typescript@5.9.3)':
+    dependencies:
+      '@prisma-next/config': 0.16.0(typescript@5.9.3)
+      '@prisma-next/contract': 0.16.0(typescript@5.9.3)
+      '@prisma-next/framework-components': 0.16.0(typescript@5.9.3)
+      '@prisma-next/utils': 0.16.0(typescript@5.9.3)
+    optionalDependencies:
+      typescript: 5.9.3
+
   '@prisma-next/psl-parser@0.16.0(typescript@7.0.2)':
     dependencies:
       '@prisma-next/config': 0.16.0(typescript@7.0.2)
@@ -2161,6 +2375,13 @@ snapshots:
       '@prisma-next/utils': 0.16.0(typescript@7.0.2)
     optionalDependencies:
       typescript: 7.0.2
+
+  '@prisma-next/psl-printer@0.16.0(typescript@5.9.3)':
+    dependencies:
+      '@prisma-next/framework-components': 0.16.0(typescript@5.9.3)
+      '@prisma-next/utils': 0.16.0(typescript@5.9.3)
+    optionalDependencies:
+      typescript: 5.9.3
 
   '@prisma-next/psl-printer@0.16.0(typescript@7.0.2)':
     dependencies:
@@ -2179,6 +2400,16 @@ snapshots:
     optionalDependencies:
       typescript: 7.0.2
 
+  '@prisma-next/sql-contract-emitter@0.16.0(typescript@5.9.3)':
+    dependencies:
+      '@prisma-next/contract': 0.16.0(typescript@5.9.3)
+      '@prisma-next/emitter': 0.16.0(typescript@5.9.3)
+      '@prisma-next/framework-components': 0.16.0(typescript@5.9.3)
+      '@prisma-next/sql-contract': 0.16.0(typescript@5.9.3)
+      '@prisma-next/utils': 0.16.0(typescript@5.9.3)
+    optionalDependencies:
+      typescript: 5.9.3
+
   '@prisma-next/sql-contract-emitter@0.16.0(typescript@7.0.2)':
     dependencies:
       '@prisma-next/contract': 0.16.0(typescript@7.0.2)
@@ -2188,6 +2419,19 @@ snapshots:
       '@prisma-next/utils': 0.16.0(typescript@7.0.2)
     optionalDependencies:
       typescript: 7.0.2
+
+  '@prisma-next/sql-contract-psl@0.16.0(typescript@5.9.3)':
+    dependencies:
+      '@prisma-next/config': 0.16.0(typescript@5.9.3)
+      '@prisma-next/contract': 0.16.0(typescript@5.9.3)
+      '@prisma-next/framework-components': 0.16.0(typescript@5.9.3)
+      '@prisma-next/psl-parser': 0.16.0(typescript@5.9.3)
+      '@prisma-next/sql-contract': 0.16.0(typescript@5.9.3)
+      '@prisma-next/sql-contract-ts': 0.16.0(typescript@5.9.3)
+      '@prisma-next/utils': 0.16.0(typescript@5.9.3)
+      pathe: 2.0.3
+    optionalDependencies:
+      typescript: 5.9.3
 
   '@prisma-next/sql-contract-psl@0.16.0(typescript@7.0.2)':
     dependencies:
@@ -2201,6 +2445,20 @@ snapshots:
       pathe: 2.0.3
     optionalDependencies:
       typescript: 7.0.2
+
+  '@prisma-next/sql-contract-ts@0.16.0(typescript@5.9.3)':
+    dependencies:
+      '@prisma-next/config': 0.16.0(typescript@5.9.3)
+      '@prisma-next/contract': 0.16.0(typescript@5.9.3)
+      '@prisma-next/contract-authoring': 0.16.0(typescript@5.9.3)
+      '@prisma-next/framework-components': 0.16.0(typescript@5.9.3)
+      '@prisma-next/sql-contract': 0.16.0(typescript@5.9.3)
+      '@prisma-next/utils': 0.16.0(typescript@5.9.3)
+      arktype: 2.2.3
+      pathe: 2.0.3
+      ts-toolbelt: 9.6.0
+    optionalDependencies:
+      typescript: 5.9.3
 
   '@prisma-next/sql-contract-ts@0.16.0(typescript@7.0.2)':
     dependencies:
@@ -2216,6 +2474,16 @@ snapshots:
     optionalDependencies:
       typescript: 7.0.2
 
+  '@prisma-next/sql-contract@0.16.0(typescript@5.9.3)':
+    dependencies:
+      '@prisma-next/contract': 0.16.0(typescript@5.9.3)
+      '@prisma-next/framework-components': 0.16.0(typescript@5.9.3)
+      '@prisma-next/sql-schema-ir': 0.16.0(typescript@5.9.3)
+      '@prisma-next/utils': 0.16.0(typescript@5.9.3)
+      arktype: 2.2.3
+    optionalDependencies:
+      typescript: 5.9.3
+
   '@prisma-next/sql-contract@0.16.0(typescript@7.0.2)':
     dependencies:
       '@prisma-next/contract': 0.16.0(typescript@7.0.2)
@@ -2226,9 +2494,21 @@ snapshots:
     optionalDependencies:
       typescript: 7.0.2
 
+  '@prisma-next/sql-errors@0.16.0(typescript@5.9.3)':
+    optionalDependencies:
+      typescript: 5.9.3
+
   '@prisma-next/sql-errors@0.16.0(typescript@7.0.2)':
     optionalDependencies:
       typescript: 7.0.2
+
+  '@prisma-next/sql-operations@0.16.0(typescript@5.9.3)':
+    dependencies:
+      '@prisma-next/operations': 0.16.0(typescript@5.9.3)
+      '@prisma-next/sql-contract': 0.16.0(typescript@5.9.3)
+      arktype: 2.2.3
+    optionalDependencies:
+      typescript: 5.9.3
 
   '@prisma-next/sql-operations@0.16.0(typescript@7.0.2)':
     dependencies:
@@ -2252,6 +2532,20 @@ snapshots:
     optionalDependencies:
       typescript: 7.0.2
 
+  '@prisma-next/sql-relational-core@0.16.0(typescript@5.9.3)':
+    dependencies:
+      '@prisma-next/contract': 0.16.0(typescript@5.9.3)
+      '@prisma-next/framework-components': 0.16.0(typescript@5.9.3)
+      '@prisma-next/operations': 0.16.0(typescript@5.9.3)
+      '@prisma-next/sql-contract': 0.16.0(typescript@5.9.3)
+      '@prisma-next/sql-operations': 0.16.0(typescript@5.9.3)
+      '@prisma-next/utils': 0.16.0(typescript@5.9.3)
+      '@standard-schema/spec': 1.1.0
+      arktype: 2.2.3
+      ts-toolbelt: 9.6.0
+    optionalDependencies:
+      typescript: 5.9.3
+
   '@prisma-next/sql-relational-core@0.16.0(typescript@7.0.2)':
     dependencies:
       '@prisma-next/contract': 0.16.0(typescript@7.0.2)
@@ -2265,6 +2559,20 @@ snapshots:
       ts-toolbelt: 9.6.0
     optionalDependencies:
       typescript: 7.0.2
+
+  '@prisma-next/sql-runtime@0.16.0(typescript@5.9.3)':
+    dependencies:
+      '@prisma-next/contract': 0.16.0(typescript@5.9.3)
+      '@prisma-next/framework-components': 0.16.0(typescript@5.9.3)
+      '@prisma-next/ids': 0.16.0(typescript@5.9.3)
+      '@prisma-next/operations': 0.16.0(typescript@5.9.3)
+      '@prisma-next/sql-contract': 0.16.0(typescript@5.9.3)
+      '@prisma-next/sql-operations': 0.16.0(typescript@5.9.3)
+      '@prisma-next/sql-relational-core': 0.16.0(typescript@5.9.3)
+      '@prisma-next/utils': 0.16.0(typescript@5.9.3)
+      arktype: 2.2.3
+    optionalDependencies:
+      typescript: 5.9.3
 
   '@prisma-next/sql-runtime@0.16.0(typescript@7.0.2)':
     dependencies:
@@ -2280,6 +2588,14 @@ snapshots:
     optionalDependencies:
       typescript: 7.0.2
 
+  '@prisma-next/sql-schema-ir@0.16.0(typescript@5.9.3)':
+    dependencies:
+      '@prisma-next/contract': 0.16.0(typescript@5.9.3)
+      '@prisma-next/framework-components': 0.16.0(typescript@5.9.3)
+      '@prisma-next/utils': 0.16.0(typescript@5.9.3)
+    optionalDependencies:
+      typescript: 5.9.3
+
   '@prisma-next/sql-schema-ir@0.16.0(typescript@7.0.2)':
     dependencies:
       '@prisma-next/contract': 0.16.0(typescript@7.0.2)
@@ -2287,6 +2603,31 @@ snapshots:
       '@prisma-next/utils': 0.16.0(typescript@7.0.2)
     optionalDependencies:
       typescript: 7.0.2
+
+  '@prisma-next/target-postgres@0.16.0(typanion@3.14.0)(typescript@5.9.3)':
+    dependencies:
+      '@prisma-next/cli': 0.16.0(typanion@3.14.0)(typescript@5.9.3)
+      '@prisma-next/contract': 0.16.0(typescript@5.9.3)
+      '@prisma-next/errors': 0.16.0(typescript@5.9.3)
+      '@prisma-next/family-sql': 0.16.0(typescript@5.9.3)
+      '@prisma-next/framework-components': 0.16.0(typescript@5.9.3)
+      '@prisma-next/migration-tools': 0.16.0(typescript@5.9.3)
+      '@prisma-next/psl-parser': 0.16.0(typescript@5.9.3)
+      '@prisma-next/sql-contract': 0.16.0(typescript@5.9.3)
+      '@prisma-next/sql-errors': 0.16.0(typescript@5.9.3)
+      '@prisma-next/sql-operations': 0.16.0(typescript@5.9.3)
+      '@prisma-next/sql-relational-core': 0.16.0(typescript@5.9.3)
+      '@prisma-next/sql-schema-ir': 0.16.0(typescript@5.9.3)
+      '@prisma-next/ts-render': 0.16.0(typescript@5.9.3)
+      '@prisma-next/utils': 0.16.0(typescript@5.9.3)
+      '@standard-schema/spec': 1.1.0
+      arktype: 2.2.3
+      pathe: 2.0.3
+    optionalDependencies:
+      typescript: 5.9.3
+    transitivePeerDependencies:
+      - magicast
+      - typanion
 
   '@prisma-next/target-postgres@0.16.0(typanion@3.14.0)(typescript@7.0.2)':
     dependencies:
@@ -2313,9 +2654,17 @@ snapshots:
       - magicast
       - typanion
 
+  '@prisma-next/ts-render@0.16.0(typescript@5.9.3)':
+    optionalDependencies:
+      typescript: 5.9.3
+
   '@prisma-next/ts-render@0.16.0(typescript@7.0.2)':
     optionalDependencies:
       typescript: 7.0.2
+
+  '@prisma-next/utils@0.16.0(typescript@5.9.3)':
+    optionalDependencies:
+      typescript: 5.9.3
 
   '@prisma-next/utils@0.16.0(typescript@7.0.2)':
     optionalDependencies:
@@ -2861,7 +3210,7 @@ snapshots:
 
   resolve-pkg-maps@1.0.0: {}
 
-  rolldown-plugin-dts@0.25.2(rolldown@1.1.1)(typescript@7.0.2):
+  rolldown-plugin-dts@0.25.2(rolldown@1.1.1)(typescript@5.9.3):
     dependencies:
       '@babel/generator': 8.0.0-rc.6
       '@babel/helper-validator-identifier': 8.0.0-rc.6
@@ -2873,7 +3222,7 @@ snapshots:
       obug: 2.1.3
       rolldown: 1.1.1
     optionalDependencies:
-      typescript: 7.0.2
+      typescript: 5.9.3
     transitivePeerDependencies:
       - oxc-resolver
 
@@ -2957,7 +3306,7 @@ snapshots:
 
   ts-toolbelt@9.6.0: {}
 
-  tsdown@0.22.0(tsx@4.23.1)(typescript@7.0.2)(unrun@0.3.1):
+  tsdown@0.22.0(tsx@4.23.1)(typescript@5.9.3)(unrun@0.3.1):
     dependencies:
       ansis: 4.3.1
       cac: 7.0.0
@@ -2968,7 +3317,7 @@ snapshots:
       obug: 2.1.3
       picomatch: 4.0.4
       rolldown: 1.1.1
-      rolldown-plugin-dts: 0.25.2(rolldown@1.1.1)(typescript@7.0.2)
+      rolldown-plugin-dts: 0.25.2(rolldown@1.1.1)(typescript@5.9.3)
       semver: 7.8.4
       tinyexec: 1.2.4
       tinyglobby: 0.2.17
@@ -2976,7 +3325,7 @@ snapshots:
       unconfig-core: 7.5.0
     optionalDependencies:
       tsx: 4.23.1
-      typescript: 7.0.2
+      typescript: 5.9.3
       unrun: 0.3.1
     transitivePeerDependencies:
       - '@ts-macro/tsc'
@@ -2994,6 +3343,8 @@ snapshots:
       fsevents: 2.3.3
 
   typanion@3.14.0: {}
+
+  typescript@5.9.3: {}
 
   typescript@7.0.2:
     optionalDependencies:
