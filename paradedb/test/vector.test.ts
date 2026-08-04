@@ -142,6 +142,52 @@ describe('renderParadeDbIndexDdl', () => {
     ).toContain('"embedding" vector_ip_ops');
   });
 
+  it('renders vector index build options in the WITH clause', () => {
+    expect(
+      renderParadeDbIndexDdl({
+        name: 'item_search_idx',
+        table: 'item',
+        keyField: 'id',
+        columns: ['id', { column: 'embedding', metric: 'cosine' }],
+        centroidRatio: 0.01,
+        trainingSamplesPerCentroid: 32,
+        clusterReplication: 1,
+      }),
+    ).toBe(
+      'CREATE INDEX "item_search_idx" ON "item" USING paradedb ("id", "embedding" vector_cosine_ops) WITH (key_field = \'id\', centroid_ratio = 0.01, training_samples_per_centroid = 32, cluster_replication = 1)',
+    );
+
+    expect(
+      renderParadeDbIndexDdl({
+        name: 'idx',
+        table: 'item',
+        keyField: 'id',
+        columns: ['id', { column: 'embedding' }],
+        centroidRatio: 0.5,
+      }),
+    ).toBe(
+      'CREATE INDEX "idx" ON "item" USING paradedb ("id", "embedding" vector_l2_ops) WITH (key_field = \'id\', centroid_ratio = 0.5)',
+    );
+  });
+
+  it('rejects out-of-range vector index build options', () => {
+    const base = {
+      name: 'idx',
+      table: 'item',
+      keyField: 'id',
+      columns: ['id', { column: 'embedding' }],
+    } as const;
+    expect(() => renderParadeDbIndexDdl({ ...base, centroidRatio: 0 })).toThrow(
+      'centroid_ratio must be a number between 0.000001 and 1, got 0',
+    );
+    expect(() => renderParadeDbIndexDdl({ ...base, trainingSamplesPerCentroid: 0.5 })).toThrow(
+      'training_samples_per_centroid must be an integer between 1 and 100000, got 0.5',
+    );
+    expect(() => renderParadeDbIndexDdl({ ...base, clusterReplication: 0 })).toThrow(
+      'cluster_replication must be an integer between 1 and 2147483647, got 0',
+    );
+  });
+
   it('requires the key_field to be listed in columns', () => {
     expect(() =>
       renderParadeDbIndexDdl({ name: 'idx', table: 'item', keyField: 'id', columns: ['embedding'] }),

@@ -27,6 +27,40 @@ export interface ParadeDbIndexDdlOptions {
   readonly schema?: string;
   readonly keyField: string;
   readonly columns: ReadonlyArray<string | ParadeDbVectorIndexColumn>;
+  readonly centroidRatio?: number;
+  readonly trainingSamplesPerCentroid?: number;
+  readonly clusterReplication?: number;
+}
+
+// Vector index build options (pg_search 0.25.0+). Index-wide; applied to every
+// vector column in the index.
+const VECTOR_INDEX_OPTIONS = [
+  { key: 'centroid_ratio', field: 'centroidRatio', min: 0.000001, max: 1, integer: false },
+  {
+    key: 'training_samples_per_centroid',
+    field: 'trainingSamplesPerCentroid',
+    min: 1,
+    max: 100000,
+    integer: true,
+  },
+  { key: 'cluster_replication', field: 'clusterReplication', min: 1, max: 2147483647, integer: true },
+] as const;
+
+function renderVectorIndexOption(
+  spec: (typeof VECTOR_INDEX_OPTIONS)[number],
+  value: number,
+): string {
+  const isValid =
+    Number.isFinite(value) &&
+    value >= spec.min &&
+    value <= spec.max &&
+    (!spec.integer || Number.isInteger(value));
+  if (!isValid) {
+    throw new Error(
+      `renderParadeDbIndexDdl: ${spec.key} must be ${spec.integer ? 'an integer' : 'a number'} between ${spec.min} and ${spec.max}, got ${value}`,
+    );
+  }
+  return `${spec.key} = ${value}`;
 }
 
 function quoteIdentifier(identifier: string): string {
@@ -81,5 +115,12 @@ export function renderParadeDbIndexDdl(options: ParadeDbIndexDdlOptions): string
     options.schema === undefined
       ? quoteIdentifier(options.table)
       : `${quoteIdentifier(options.schema)}.${quoteIdentifier(options.table)}`;
-  return `CREATE INDEX ${quoteIdentifier(options.name)} ON ${qualifiedTable} USING paradedb (${columnList}) WITH (key_field = '${escapeLiteral(options.keyField)}')`;
+  const withEntries = [`key_field = '${escapeLiteral(options.keyField)}'`];
+  for (const spec of VECTOR_INDEX_OPTIONS) {
+    const value = options[spec.field];
+    if (value !== undefined) {
+      withEntries.push(renderVectorIndexOption(spec, value));
+    }
+  }
+  return `CREATE INDEX ${quoteIdentifier(options.name)} ON ${qualifiedTable} USING paradedb (${columnList}) WITH (${withEntries.join(', ')})`;
 }
