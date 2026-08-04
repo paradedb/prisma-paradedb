@@ -56,5 +56,59 @@ describe('ParadeDB extension', () => {
       const result = entry.options({ key_field: 42 });
       expect(result instanceof type.errors).toBe(true);
     });
+
+    it('accepts all three vector index build options together', () => {
+      const entry = paradedbIndexTypes.entries[0];
+      if (!entry) throw new Error('expected paradedb entry');
+      const result = entry.options({
+        key_field: 'id',
+        centroid_ratio: 0.01,
+        training_samples_per_centroid: 32,
+        cluster_replication: 1,
+      });
+      expect(result instanceof type.errors).toBe(false);
+    });
+
+    it('accepts a single vector index build option alone', () => {
+      const entry = paradedbIndexTypes.entries[0];
+      if (!entry) throw new Error('expected paradedb entry');
+      const result = entry.options({ key_field: 'id', centroid_ratio: 0.5 });
+      expect(result instanceof type.errors).toBe(false);
+    });
+
+    it('rejects centroid_ratio outside [0.000001, 1]', () => {
+      const entry = paradedbIndexTypes.entries[0];
+      if (!entry) throw new Error('expected paradedb entry');
+      expect(entry.options({ key_field: 'id', centroid_ratio: 0 }) instanceof type.errors).toBe(
+        true,
+      );
+      expect(entry.options({ key_field: 'id', centroid_ratio: 1.5 }) instanceof type.errors).toBe(
+        true,
+      );
+    });
+
+    it('rejects non-integer or out-of-range training_samples_per_centroid', () => {
+      const entry = paradedbIndexTypes.entries[0];
+      if (!entry) throw new Error('expected paradedb entry');
+      expect(
+        entry.options({ key_field: 'id', training_samples_per_centroid: 0.5 }) instanceof
+          type.errors,
+      ).toBe(true);
+      expect(
+        entry.options({ key_field: 'id', training_samples_per_centroid: 100001 }) instanceof
+          type.errors,
+      ).toBe(true);
+    });
+
+    it('rejects cluster_replication below 1 or above i32 max', () => {
+      const entry = paradedbIndexTypes.entries[0];
+      if (!entry) throw new Error('expected paradedb entry');
+      expect(entry.options({ key_field: 'id', cluster_replication: 0 }) instanceof type.errors).toBe(
+        true,
+      );
+      expect(
+        entry.options({ key_field: 'id', cluster_replication: 2147483648 }) instanceof type.errors,
+      ).toBe(true);
+    });
   });
 });
