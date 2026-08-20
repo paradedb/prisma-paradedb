@@ -17,7 +17,7 @@
     "facets",
     "aggregations"
   ],
-  "license": "Apache-2.0",
+  "license": "MIT",
   "author": "ParadeDB, Inc.",
   "homepage": "https://github.com/paradedb/prisma-paradedb",
   "bugs": {
