@@ -1,6 +1,7 @@
 {
   "name": "@prisma-next/extension-paradedb",
   "version": "0.0.1",
+  "description": "Official ParadeDB integration for Prisma",
   "keywords": [
     "paradedb",
     "prisma",
@@ -17,6 +18,17 @@
     "aggregations"
   ],
   "license": "Apache-2.0",
+  "author": "ParadeDB, Inc.",
+  "homepage": "https://github.com/paradedb/prisma-paradedb",
+  "bugs": {
+    "url": "https://github.com/paradedb/prisma-paradedb/issues"
+  },
+  "engines": {
+    "node": ">=24"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
   "type": "module",
   "sideEffects": false,
   "scripts": {
