@@ -1,6 +1,20 @@
 {
   "name": "@prisma-next/extension-paradedb",
   "version": "0.0.1",
+  "keywords": [
+    "paradedb",
+    "prisma",
+    "postgres",
+    "postgresql",
+    "search",
+    "bm25",
+    "text search",
+    "full text search",
+    "hybrid search",
+    "vector search",
+    "faceted search",
+    "facets"
+  ],
   "license": "Apache-2.0",
   "type": "module",
   "sideEffects": false,
