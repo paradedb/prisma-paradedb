@@ -154,7 +154,7 @@ The ORDER BY distance operator must match the index opclass metric; a mismatch d
 
 ## References
 
-- [ParadeDB documentation](https://docs.paradedb.com/)
-- [ParadeDB CREATE INDEX](https://docs.paradedb.com/documentation/indexing/create-index)
+- [ParadeDB documentation](https://paradedb.com/docs/)
+- [ParadeDB CREATE INDEX](https://paradedb.com/docs/documentation/indexing/create-index)
 - [ADR 210 — Index-type registry](../../../docs/architecture%20docs/adrs/ADR%20210%20-%20Index-type%20registry.md)
 - [Prisma Next Architecture Overview](../../../docs/Architecture%20Overview.md)

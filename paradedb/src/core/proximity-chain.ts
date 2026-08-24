@@ -19,7 +19,7 @@ interface ProximityStep {
   readonly ordered: boolean;
 }
 
-// https://docs.paradedb.com/documentation/full-text/proximity
+// https://paradedb.com/docs/documentation/full-text/proximity
 export class ParadeDbProximityChain
   implements Expression<{ codecId: 'pg/text@1'; nullable: false }>
 {

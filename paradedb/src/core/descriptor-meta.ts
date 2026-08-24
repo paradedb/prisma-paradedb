@@ -21,7 +21,7 @@ const VECTOR = PARADEDB_VECTOR_CODEC_ID;
 export function paradedbQueryOperations<CT extends CodecTypesBase>(): QueryOperationTypes<CT> {
   return {
     // `@@@` accepts both text and structured query types on its RHS.
-    // https://docs.paradedb.com/documentation/full-text/match
+    // https://paradedb.com/docs/documentation/full-text/match
     paradeDbMatch: {
       self: { codecId: TEXT },
       impl: (self, query) =>
@@ -64,7 +64,7 @@ export function paradedbQueryOperations<CT extends CodecTypesBase>(): QueryOpera
           },
         }),
     },
-    // https://docs.paradedb.com/documentation/full-text/term
+    // https://paradedb.com/docs/documentation/full-text/term
     paradeDbTerm: {
       self: { codecId: TEXT },
       impl: (self, query) =>
@@ -79,7 +79,7 @@ export function paradedbQueryOperations<CT extends CodecTypesBase>(): QueryOpera
           },
         }),
     },
-    // https://docs.paradedb.com/documentation/full-text/phrase
+    // https://paradedb.com/docs/documentation/full-text/phrase
     paradeDbPhrase: {
       self: { codecId: TEXT },
       impl: (self, query) =>
@@ -94,7 +94,7 @@ export function paradedbQueryOperations<CT extends CodecTypesBase>(): QueryOpera
           },
         }),
     },
-    // https://docs.paradedb.com/documentation/sorting/score
+    // https://paradedb.com/docs/documentation/sorting/score
     paradeDbScore: {
       self: { codecId: INT4 },
       impl: (self) =>
@@ -110,7 +110,7 @@ export function paradedbQueryOperations<CT extends CodecTypesBase>(): QueryOpera
         }),
     },
     // PG rejects parameterized typmods, so the cast argument lowers to a literal.
-    // https://docs.paradedb.com/documentation/full-text/fuzzy
+    // https://paradedb.com/docs/documentation/full-text/fuzzy
     paradeDbFuzzy: {
       self: { codecId: TEXT },
       impl: (self, distance) => {
@@ -131,7 +131,7 @@ export function paradedbQueryOperations<CT extends CodecTypesBase>(): QueryOpera
         });
       },
     },
-    // https://docs.paradedb.com/documentation/sorting/boost
+    // https://paradedb.com/docs/documentation/sorting/boost
     paradeDbBoost: {
       self: { codecId: TEXT },
       impl: (self, weight) => {
@@ -188,7 +188,7 @@ export function paradedbQueryOperations<CT extends CodecTypesBase>(): QueryOpera
         });
       },
     },
-    // https://docs.paradedb.com/documentation/full-text/proximity
+    // https://paradedb.com/docs/documentation/full-text/proximity
     paradeDbProximity: {
       self: { codecId: TEXT },
       impl: (start) => new ParadeDbProximityChain(start),
