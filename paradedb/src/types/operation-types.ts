@@ -80,8 +80,8 @@ export type QueryOperationTypes<CT extends CodecTypesBase> = SqlQueryOperationTy
       readonly self: { readonly codecId: 'pg/text@1' };
       readonly impl: (start: CodecExpression<'pg/text@1', boolean, CT>) => ParadeDbProximityChain;
     };
-    // `key_field @@@ pdb.all()` — the match-all predicate that activates the bm25
-    // scan; mandatory alongside vector distance ORDER BY.
+    // `key_field @@@ pdb.all()` — the match-all predicate that activates the ParadeDB
+    // index scan; mandatory alongside vector distance ORDER BY.
     readonly paradeDbAll: {
       readonly self: { readonly codecId: 'pg/int4@1' };
       readonly impl: (

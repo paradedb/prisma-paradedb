@@ -72,7 +72,7 @@ export const contract = defineContract({
 
 ### key_field
 
-ParadeDB BM25 indexes require a `key_field` — a unique column that identifies each document. It is required, must be a string, and is typically (but not always) the table's primary key.
+ParadeDB indexes require a `key_field` — a unique column that identifies each document. It is required, must be a string, and is typically (but not always) the table's primary key.
 
 ## Vector search
 
@@ -113,7 +113,7 @@ renderParadeDbIndexDdl({
 
 ### Top-K query
 
-A `@@@` predicate is mandatory to activate the bm25 scan — a pure vector query uses the match-all predicate `paradeDbAll` (`@@@ pdb.all()`) on the key field. A `LIMIT` is also required for Top-K pushdown:
+A `@@@` predicate is mandatory to activate the ParadeDB index scan — a pure vector query uses the match-all predicate `paradeDbAll` (`@@@ pdb.all()`) on the key field. A `LIMIT` is also required for Top-K pushdown:
 
 ```typescript
 const plan = db.sql.public.item
@@ -141,7 +141,7 @@ The ORDER BY distance operator must match the index opclass metric; a mismatch d
 
 ## Capabilities
 
-- `paradedb/bm25` — indicates support for BM25 full-text search indexes
+- `paradedb/bm25` — indicates support for full-text search with BM25 ranking
 - `paradedb/vector` — indicates support for vector columns and distance queries
 
 ## Not yet implemented

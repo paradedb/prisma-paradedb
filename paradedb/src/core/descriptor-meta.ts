@@ -193,7 +193,7 @@ export function paradedbQueryOperations<CT extends CodecTypesBase>(): QueryOpera
       self: { codecId: TEXT },
       impl: (start) => new ParadeDbProximityChain(start),
     },
-    // `key_field @@@ pdb.all()` — mandatory to activate the bm25 scan when the
+    // `key_field @@@ pdb.all()` — mandatory to activate the ParadeDB index scan when the
     // query is a pure vector Top-K (ORDER BY distance + LIMIT).
     paradeDbAll: {
       self: { codecId: INT4 },
