@@ -33,14 +33,14 @@
     "@prisma-next/target-postgres": "0.16.0",
     "arktype": "^2.2.3",
     "dotenv": "^17.4.2",
-    "pg": "8.22.0"
+    "pg": "8.23.0"
   },
   "devDependencies": {
     "@prisma-next/cli": "0.16.0",
     "@prisma-next/emitter": "0.16.0",
     "@prisma-next/sql-contract-emitter": "0.16.0",
-    "@types/node": "26.1.1",
-    "@types/pg": "8.20.0",
+    "@types/node": "26.4.0",
+    "@types/pg": "8.23.1",
     "typanion": "3.14.0",
     "tsx": "^4.23.1",
     "typescript": "7.0.2",
